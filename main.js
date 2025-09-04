@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         1: {
             initialAttack: 10,
             evolutions: [
-                { name: "コドラゴン", image: "images/hiyoko_knight.png", rank: "Normal" },
+                { name: "コドラゴン", image: "images-n001.png", rank: "Normal" },
                 { name: "トゥントゥントゥン サ フール", image: "images/niwatori_knight.png", rank: "Rare" },
                 { name: "見習い騎士", image: "images/eagle_rider.png", rank: "Normal" },
             ]
