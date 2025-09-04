@@ -1,23 +1,32 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- アプリケーションデータの管理 ---
-    let appData = {
-        totalPoints: 0,
-        characters: [],
-        stamps: {}
-    };
+    // --- アプリケーションデータの管理 ---
+let appData = {
+    totalPoints: 0,
+    characters: [],
+    stamps: {}
+};
 
-    const CHARACTER_MASTER_DATA = {
-        1: {
-            initialAttack: 10,
-            evolutions: [
-                { name: "コドラゴン", image: "images-n001.png", rank: "Normal" },
-                { name: "トゥントゥントゥン サ フール", image: "images/niwatori_knight.png", rank: "Rare" },
-                { name: "見習い騎士", image: "images/eagle_rider.png", rank: "Normal" },
-            ]
-        }
-    };
-
+// 攻撃力の設定を追加
+const CHARACTER_MASTER_DATA = {
+    1: {
+        initialAttack: 10, // ひよこナイトの初期攻撃力
+        evolutions: [
+            { name: "ひよこナイト", image: "images-n001.png", rank: "D" },
+            { name: "にわとり騎士", image: "images/niwatori_knight.png", rank: "C" },
+            { name: "イーグルライダー", image: "images/eagle_rider.png", rank: "A" },
+        ]
+    },
+    2: {
+        initialAttack: 15, // みならい魔法使いの初期攻撃力
+        evolutions: [
+            { name: "みならい魔法使い", image: "images/minarai_mahoutsukai.png", rank: "D" },
+            { name: "一人前の魔導士", image: "images/ichininmae_madoushi.png", rank: "B" },
+            { name: "大賢者", image: "images/daikenja.png", rank: "S" },
+        ]
+    }
+};
     function saveData() {
         localStorage.setItem('studyApp', JSON.stringify(appData));
     }
@@ -132,50 +141,76 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- ページ2: キャラクター機能 ---
     const totalPointsDisplay_characters = document.getElementById('totalPointsDisplay_characters');
-    const characterListContainerEl = document.getElementById('characterListContainer');
-    const characterHintEl = document.getElementById('characterHint');
+const characterListContainerEl = document.getElementById('characterListContainer');
+const characterHintEl = document.getElementById('characterHint');
 
-    function initializeCharacterPage() {
-        if (appData.characters.length === 0) {
-            appData.characters.push({
-                id: 1,
-                level: 1,
-                evolutionIndex: 0
-            });
-            saveData();
-        }
-        updatePointDisplay();
-        renderCharacters();
-    }
+// 新しい要素を取得
+const totalAttackPowerEl = document.getElementById('totalAttackPower');
+const totalCharacterCountEl = document.getElementById('totalCharacterCount');
 
-    function renderCharacters() {
-        characterListContainerEl.innerHTML = '';
-        appData.characters.forEach(charData => {
-            const master = CHARACTER_MASTER_DATA[charData.id];
-            const currentEvolution = master.evolutions[charData.evolutionIndex];
-            
-            const requiredPoints = (charData.level + 1) * 10;
-            const canLevelUp = appData.totalPoints >= requiredPoints && charData.level < 99;
-            const attackPower = master.initialAttack * charData.level;
-
-            const card = document.createElement('div');
-            card.className = 'card character-card';
-            card.innerHTML = `
-                <img src="${currentEvolution.image}" alt="${currentEvolution.name}">
-                <h3>${currentEvolution.name} (Lv. ${charData.level})</h3>
-                <p>ランク: ${currentEvolution.rank}</p>
-                <p>攻撃力: ${attackPower}</p>
-                <p>次のレベルまで: ${requiredPoints} P</p>
-                <button class="level-up-button" data-character-id="${charData.id}" ${canLevelUp ? '' : 'disabled'}>
-                    レベルアップ！
-                </button>
-            `;
-            characterListContainerEl.appendChild(card);
-            
-            if (charData.level >= 30) {
-                characterHintEl.textContent = '次のキャラクターを追加する準備ができました！';
-            }
+function initializeCharacterPage() {
+    // 初期キャラクターを2体にする
+    if (appData.characters.length === 0) {
+        appData.characters.push({
+            id: 1,
+            level: 1,
+            evolutionIndex: 0
         });
+        appData.characters.push({
+            id: 2,
+            level: 1,
+            evolutionIndex: 0
+        });
+        saveData();
+    }
+    updatePointDisplay();
+    renderCharacters();
+}
+
+function renderCharacters() {
+    characterListContainerEl.innerHTML = '';
+    
+    // 総攻撃力を計算
+    let totalAttackPower = 0;
+    appData.characters.forEach(charData => {
+        const master = CHARACTER_MASTER_DATA[charData.id];
+        const attackPower = master.initialAttack * charData.level;
+        totalAttackPower += attackPower;
+        
+        const currentEvolution = master.evolutions[charData.evolutionIndex];
+        const requiredPoints = (charData.level + 1) * 10;
+        const canLevelUp = appData.totalPoints >= requiredPoints && charData.level < 99;
+        
+        const card = document.createElement('div');
+        card.className = 'card character-card';
+        card.innerHTML = `
+            <img src="${currentEvolution.image}" alt="${currentEvolution.name}">
+            <h3>${currentEvolution.name} (Lv. ${charData.level})</h3>
+            <p>ランク: ${currentEvolution.rank}</p>
+            <p>攻撃力: ${attackPower}</p>
+            <p>次のレベルまで: ${requiredPoints} P</p>
+            <button class="level-up-button" data-character-id="${charData.id}" ${canLevelUp ? '' : 'disabled'}>
+                レベルアップ！
+            </button>
+        `;
+        characterListContainerEl.appendChild(card);
+    });
+
+    // 総攻撃力と総キャラクター数を更新
+    totalAttackPowerEl.textContent = totalAttackPower;
+    totalCharacterCountEl.textContent = appData.characters.length;
+
+    document.querySelectorAll('.level-up-button').forEach(button => {
+        button.addEventListener('click', handleLevelUpClick);
+    });
+
+    // ヒントの表示ロジックも調整
+    if (appData.characters.some(char => char.level >= 30)) {
+        characterHintEl.textContent = '次のキャラクターを追加する準備ができました！';
+    } else {
+        characterHintEl.textContent = 'キャラクターを30レベルにしてみよう。';
+    }
+}
         
         document.querySelectorAll('.level-up-button').forEach(button => {
             button.addEventListener('click', handleLevelUpClick);
