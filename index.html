@@ -1,1 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Study App</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
 
+    <header>
+        <div class="header-logo">
+            <span>My Study App</span>
+        </div>
+    </header>
+
+    <nav class="nav-menu">
+        <a href="#stamp" class="nav-item active" data-page="stamp">
+            <i class="fas fa-stamp"></i>
+            <span>スタンプ</span>
+        </a>
+        <a href="#characters" class="nav-item" data-page="characters">
+            <i class="fas fa-paw"></i>
+            <span>キャラクター</span>
+        </a>
+        <a href="#calendar" class="nav-item" data-page="calendar">
+            <i class="fas fa-calendar-alt"></i>
+            <span>カレンダー</span>
+        </a>
+    </nav>
+    
+    <main>
+        <div id="stamp" class="page active-page">
+            <h1>スタンプ</h1>
+            <p>日付: <span id="todayDate"></span></p>
+            <p class="point-display">所持ポイント: <span id="totalPointsDisplay_stamp">0</span></p>
+            <div class="stamp-section">
+                <div id="stampContainer">
+                    </div>
+                <div id="inputSection" style="display:none;">
+                    <p id="stampMessage"></p>
+                    <input type="text" id="stampInput" placeholder="今日取り組んだもの" class="text-input">
+                    <button id="completeStampButton" class="main-button">完了</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="characters" class="page">
+            <h1>キャラクター</h1>
+            <p class="point-display">所持ポイント: <span id="totalPointsDisplay_characters">0</span></p>
+            <div id="characterListContainer">
+                </div>
+            <div id="characterHint">
+                <p>キャラクターを30レベルにしてみよう。</p>
+            </div>
+        </div>
+
+        <div id="calendar" class="page">
+            <h1>カレンダー</h1>
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <button id="prevMonthBtn" class="nav-button">＜ 前の月</button>
+                    <h2 id="currentMonthYear"></h2>
+                    <button id="nextMonthBtn" class="nav-button">次の月 ＞</button>
+                </div>
+                <div class="weekdays">
+                    <span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span>
+                </div>
+                <div id="calendarGrid" class="calendar-grid">
+                    </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="main.js"></script>
+</body>
+</html>
