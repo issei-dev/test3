@@ -98,6 +98,20 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // 押されたスタンプのエフェクトを表示
+        const stampEffectContainer = document.createElement('div');
+        stampEffectContainer.className = 'stamp-effect-container';
+
+        for (let i = 0; i < stampedCountToday; i++) {
+            const stampIcon = document.createElement('span');
+            stampIcon.className = 'stamp-icon';
+            stampIcon.textContent = '✅'; // チェックマークの絵文字
+            stampEffectContainer.appendChild(stampIcon);
+        }
+
+        stampContainerEl.appendChild(stampEffectContainer);
+
+        // スタンプボタンを表示
         const stampButton = document.createElement('button');
         stampButton.className = 'main-button';
         stampButton.textContent = '今日のスタンプ';
@@ -263,59 +277,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function initializeCalendarPage() {
         renderCalendar(currentCalendarDate);
-    }
-
-    function renderCalendar(date) {
-        calendarGridEl.innerHTML = '';
-        const year = date.getFullYear();
-        const month = date.getMonth();
-
-        currentMonthYearEl.textContent = `${year}年 ${month + 1}月`;
-
-        const firstDayOfMonth = new Date(year, month, 1);
-        const lastDayOfMonth = new Date(year, month + 1, 0);
-        const startDate = new Date(firstDayOfMonth);
-        startDate.setDate(firstDayOfMonth.getDate() - firstDayOfMonth.getDay());
-        
-        let day = new Date(startDate);
-        while (day <= lastDayOfMonth || day.getDay() !== 0) {
-            const dayEl = document.createElement('div');
-            dayEl.className = 'calendar-day';
-            if (day.getMonth() !== month) {
-                dayEl.classList.add('not-current-month');
-            }
-
-            const dayNumberEl = document.createElement('div');
-            dayNumberEl.className = 'day-number';
-            dayNumberEl.textContent = day.getDate();
-            dayEl.appendChild(dayNumberEl);
-
-            const formattedDate = day.toISOString().split('T')[0];
-            const stampsForDay = appData.stamps[formattedDate] || [];
-            stampsForDay.forEach(stamp => {
-                const stampItemEl = document.createElement('div');
-                stampItemEl.className = 'stamp-item';
-                stampItemEl.textContent = stamp.text;
-                dayEl.appendChild(stampItemEl);
-            });
-
-            calendarGridEl.appendChild(dayEl);
-            day.setDate(day.getDate() + 1);
-        }
-    }
-
-    prevMonthBtn.addEventListener('click', () => {
-        currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
-        renderCalendar(currentCalendarDate);
-    });
-
-    nextMonthBtn.addEventListener('click', () => {
-        currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
-        renderCalendar(currentCalendarDate);
-    });
-
-    // --- 初期化処理 ---
-    loadData();
-    initializeStampPage();
-    showPage('stamp');
-});
