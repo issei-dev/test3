@@ -5,6 +5,72 @@ document.addEventListener('DOMContentLoaded', () => {
         totalPoints: 0,
         characters: [],
         stamps: {}
+        // --- 管理者メニュー機能 ---
+const ADMIN_PASSWORD = "admin"; // 管理者パスワードを設定
+
+const adminMenuButton = document.getElementById('adminMenuButton');
+const adminModal = document.getElementById('adminModal');
+const adminPasswordInput = document.getElementById('adminPasswordInput');
+const passwordSubmitButton = document.getElementById('passwordSubmitButton');
+const closeModalButton = document.getElementById('closeModalButton');
+const adminControls = document.getElementById('adminControls');
+const pointInput = document.getElementById('pointInput');
+const addPointsButton = document.getElementById('addPointsButton');
+const resetDataButton = document.getElementById('resetDataButton');
+const adminMessage = document.getElementById('adminMessage');
+
+// 管理者メニューボタンをクリック
+adminMenuButton.addEventListener('click', () => {
+    adminModal.style.display = 'flex';
+    adminControls.style.display = 'none';
+    adminPasswordInput.value = '';
+    adminMessage.textContent = '';
+});
+
+// パスワード確定ボタンをクリック
+passwordSubmitButton.addEventListener('click', () => {
+    if (adminPasswordInput.value === ADMIN_PASSWORD) {
+        adminControls.style.display = 'block';
+        adminMessage.textContent = 'ログイン成功！';
+        adminMessage.style.color = 'green';
+    } else {
+        adminMessage.textContent = 'パスワードが違います。';
+        adminMessage.style.color = 'red';
+    }
+});
+
+// モーダルを閉じる
+closeModalButton.addEventListener('click', () => {
+    adminModal.style.display = 'none';
+});
+
+// ポイント追加ボタンをクリック
+addPointsButton.addEventListener('click', () => {
+    const pointsToAdd = parseInt(pointInput.value, 10);
+    if (!isNaN(pointsToAdd) && pointsToAdd > 0) {
+        appData.totalPoints += pointsToAdd;
+        saveData();
+        updatePointDisplay();
+        alert(`${pointsToAdd}ポイントを追加しました！`);
+        adminModal.style.display = 'none';
+    } else {
+        adminMessage.textContent = '有効な数値を入力してください。';
+    }
+});
+
+// データリセットボタンをクリック
+resetDataButton.addEventListener('click', () => {
+    if (confirm("本当に全てのデータをリセットしますか？この操作は元に戻せません。")) {
+        localStorage.removeItem('studyApp');
+        // アプリケーションデータを初期状態に戻す
+        appData.totalPoints = 0;
+        appData.characters = [];
+        appData.stamps = {};
+        
+        // ページを再読み込みして完全に初期化
+        location.reload();
+    }
+});
     };
 
     const CHARACTER_MASTER_DATA = {
