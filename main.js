@@ -9,28 +9,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const CHARACTER_MASTER_DATA = {
         1: {
             evolutions: [
-                { name: "ひよこナイト", image: "images-n001.png", rank: "Normal", initialAttack: 10, maxLevel: 30 },
+                { name: "ひよこナイト", image: "images/hiyoko_knight.png", rank: "Normal", initialAttack: 10, maxLevel: 30 },
                 { name: "にわとり騎士", image: "images/niwatori_knight.png", rank: "Rare", initialAttack: 25, maxLevel: 50 },
                 { name: "イーグルライダー", image: "images/eagle_rider.png", rank: "Super Rare", initialAttack: 50, maxLevel: 75 },
             ]
         },
         2: {
             evolutions: [
-                { name: "みならい魔法使い", image: "images-sr003.png", rank: "Normal", initialAttack: 15, maxLevel: 30 },
+                { name: "みならい魔法使い", image: "images/minarai_mahoutsukai.png", rank: "Normal", initialAttack: 15, maxLevel: 30 },
                 { name: "一人前の魔導士", image: "images/ichininmae_madoushi.png", rank: "Super Rare", initialAttack: 40, maxLevel: 75 },
                 { name: "大賢者", image: "images/daikenja.png", rank: "Ultimate Rare", initialAttack: 80, maxLevel: 99 },
             ]
-        }
-         3: {
+        },
+        3: {
             evolutions: [
-                { name: "3番目", image: "images-sr001.png", rank: "Normal", initialAttack: 15, maxLevel: 30 },
-                { name: "一人前の魔導士", image: "images/ichininmae_madoushi.png", rank: "Super Rare", initialAttack: 40, maxLevel: 75 },
-                { name: "大賢者", image: "images/daikenja.png", rank: "Ultimate Rare", initialAttack: 80, maxLevel: 99 },
+                { name: "ちびドラゴン", image: "images/chibi_dragon.png", rank: "Normal", initialAttack: 20, maxLevel: 30 },
+                { name: "ファイヤードラゴン", image: "images/fire_dragon.png", rank: "Rare", initialAttack: 50, maxLevel: 60 },
+                { name: "レジェンドドラゴン", image: "images/legend_dragon.png", rank: "Legend", initialAttack: 100, maxLevel: 99 },
             ]
         }
     };
 
-   function saveData() {
+    function saveData() {
         localStorage.setItem('studyApp', JSON.stringify(appData));
     }
 
@@ -162,24 +162,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalCharacterCountEl = document.getElementById('totalCharacterCount');
 
     function initializeCharacterPage() {
-        if (appData.characters.length < 5) {
-            if (appData.characters.length === 0) {
-                appData.characters.push({
-                    id: 1,
-                    level: 1,
-                    evolutionIndex: 0
-                });
-                appData.characters.push({
-                    id: 2,
-                    level: 1,
-                    evolutionIndex: 0
-                });
-            } else if (appData.characters.length === 2) {
-                appData.characters.push({
-                    id: 3,
-                    level: 1,
-                    evolutionIndex: 0
-                });
+        loadData();
+        if (appData.characters.length < 3) {
+            const existingCharacterIds = appData.characters.map(c => c.id);
+            for (let i = 1; i <= 3; i++) {
+                if (!existingCharacterIds.includes(i)) {
+                    appData.characters.push({
+                        id: i,
+                        level: 1,
+                        evolutionIndex: 0
+                    });
+                    break;
+                }
             }
             saveData();
         }
