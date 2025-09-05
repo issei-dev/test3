@@ -1,105 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- アプリケーションデータの管理 ---
     let appData = {
         totalPoints: 0,
         characters: [],
         stamps: {}
-        // --- 管理者メニュー機能 ---
-const ADMIN_PASSWORD = "admin"; // 管理者パスワードを設定
-
-const adminMenuButton = document.getElementById('adminMenuButton');
-const adminModal = document.getElementById('adminModal');
-const adminPasswordInput = document.getElementById('adminPasswordInput');
-const passwordSubmitButton = document.getElementById('passwordSubmitButton');
-const closeModalButton = document.getElementById('closeModalButton');
-const adminControls = document.getElementById('adminControls');
-const pointInput = document.getElementById('pointInput');
-const addPointsButton = document.getElementById('addPointsButton');
-const resetDataButton = document.getElementById('resetDataButton');
-const adminMessage = document.getElementById('adminMessage');
-
-// 管理者メニューボタンをクリック
-adminMenuButton.addEventListener('click', () => {
-    adminModal.style.display = 'flex';
-    adminControls.style.display = 'none';
-    adminPasswordInput.value = '';
-    adminMessage.textContent = '';
-});
-
-// パスワード確定ボタンをクリック
-passwordSubmitButton.addEventListener('click', () => {
-    if (adminPasswordInput.value === ADMIN_PASSWORD) {
-        adminControls.style.display = 'block';
-        adminMessage.textContent = 'ログイン成功！';
-        adminMessage.style.color = 'green';
-    } else {
-        adminMessage.textContent = 'パスワードが違います。';
-        adminMessage.style.color = 'red';
-    }
-});
-
-// モーダルを閉じる
-closeModalButton.addEventListener('click', () => {
-    adminModal.style.display = 'none';
-});
-
-// ポイント追加ボタンをクリック
-addPointsButton.addEventListener('click', () => {
-    const pointsToAdd = parseInt(pointInput.value, 10);
-    if (!isNaN(pointsToAdd) && pointsToAdd > 0) {
-        appData.totalPoints += pointsToAdd;
-        saveData();
-        updatePointDisplay();
-        alert(`${pointsToAdd}ポイントを追加しました！`);
-        adminModal.style.display = 'none';
-    } else {
-        adminMessage.textContent = '有効な数値を入力してください。';
-    }
-});
-
-// データリセットボタンをクリック
-resetDataButton.addEventListener('click', () => {
-    if (confirm("本当に全てのデータをリセットしますか？この操作は元に戻せません。")) {
-        localStorage.removeItem('studyApp');
-        // アプリケーションデータを初期状態に戻す
-        appData.totalPoints = 0;
-        appData.characters = [];
-        appData.stamps = {};
-        
-        // ページを再読み込みして完全に初期化
-        location.reload();
-    }
-});
     };
 
     const CHARACTER_MASTER_DATA = {
-    1: {
-        initialAttack: 10,
-        evolutions: [
-            // Normal ランク
-                { name: "コドラゴン", image: "images-n001.png", rank: "Normal", maxLevel: 30 },
-            // Rare ランク
-            { name: "にわとり騎士", image: "images/niwatori_knight.png", rank: "Rare", maxLevel: 50 },
-            // Super Rare ランク
-            { name: "イーグルライダー", image: "images/eagle_rider.png", rank: "Super Rare", maxLevel: 75 },
+        1: {
+            initialAttack: 10,
+            evolutions: [
+                { name: "ひよこナイト", image: "images/hiyoko_knight.png", rank: "Normal", maxLevel: 30 },
+                { name: "にわとり騎士", image: "images/niwatori_knight.png", rank: "Rare", maxLevel: 50 },
+                { name: "イーグルライダー", image: "images/eagle_rider.png", rank: "Super Rare", maxLevel: 75 },
             ]
         },
-          2: {
-        initialAttack: 15,
-        evolutions: [
-            // Normal ランク
-            { name: "みならい魔法使い", image: "images/minarai_mahoutsukai.png", rank: "Normal", maxLevel: 30 },
-            // Super Rare ランク
-            { name: "一人前の魔導士", image: "images/ichininmae_madoushi.png", rank: "Super Rare", maxLevel: 75 },
-            // Ultimate Rare ランク
-            { name: "大賢者", image: "images/daikenja.png", rank: "Ultimate Rare", maxLevel: 99 },
-        ]
-    }
-    // 必要に応じて、ここにUltra Rareなどを追加
-    // 例：{ name: "伝説の勇者", rank: "Ultra Rare", maxLevel: 80 }
-};
-               
+        2: {
+            initialAttack: 15,
+            evolutions: [
+                { name: "みならい魔法使い", image: "images/minarai_mahoutsukai.png", rank: "Normal", maxLevel: 30 },
+                { name: "一人前の魔導士", image: "images/ichininmae_madoushi.png", rank: "Super Rare", maxLevel: 75 },
+                { name: "大賢者", image: "images/daikenja.png", rank: "Ultimate Rare", maxLevel: 99 },
             ]
         }
     };
@@ -130,6 +51,7 @@ resetDataButton.addEventListener('click', () => {
             document.getElementById(targetPageId).classList.add('active-page');
             e.target.closest('.nav-item').classList.add('active');
 
+            // ページが切り替わったときに各ページを初期化
             if (targetPageId === 'stamp') {
                 initializeStampPage();
             } else if (targetPageId === 'characters') {
@@ -222,108 +144,84 @@ resetDataButton.addEventListener('click', () => {
     const totalAttackPowerEl = document.getElementById('totalAttackPower');
     const totalCharacterCountEl = document.getElementById('totalCharacterCount');
 
-    // initializeCharacterPage関数の一部（修正案）
-function initializeCharacterPage() {
-    // まだキャラクターデータがない場合（アプリ初回起動時）
-    if (appData.characters.length === 0) {
-        // CHARACTER_MASTER_DATAのすべてのキャラクターを初期データとして追加
-        Object.keys(CHARACTER_MASTER_DATA).forEach(charId => {
+    function initializeCharacterPage() {
+        if (appData.characters.length === 0) {
             appData.characters.push({
-                id: parseInt(charId),
+                id: 1,
                 level: 1,
                 evolutionIndex: 0
             });
-        });
+            appData.characters.push({
+                id: 2,
+                level: 1,
+                evolutionIndex: 0
+            });
             saveData();
         }
         updatePointDisplay();
         renderCharacters();
     }
 
-    // main.js の renderCharacters 関数
-
-function renderCharacters() {
-    characterListContainerEl.innerHTML = '';
-    
-    let totalAttackPower = 0;
-    appData.characters.forEach(charData => {
-        const master = CHARACTER_MASTER_DATA[charData.id];
-        const currentEvolution = master.evolutions[charData.evolutionIndex];
+    function renderCharacters() {
+        characterListContainerEl.innerHTML = '';
         
-        // 現在の進化段階の最大レベルを取得
-        const maxLevel = currentEvolution.maxLevel;
-        const isMaxLevel = charData.level >= maxLevel;
-        
-        const attackPower = master.initialAttack * charData.level;
-        totalAttackPower += attackPower;
-        
-        // レベルアップに必要なポイント
-        const requiredPoints = (charData.level + 1) * 10;
-        const canLevelUp = appData.totalPoints >= requiredPoints && !isMaxLevel;
-        
-        const card = document.createElement('div');
-        card.className = 'card character-card';
-        card.innerHTML = `
-            <img src="${currentEvolution.image}" alt="${currentEvolution.name}">
-            <h3>${currentEvolution.name} (Lv. ${charData.level})</h3>
-            <p>ランク: ${currentEvolution.rank}</p>
-            <p>攻撃力: ${attackPower}</p>
-            ${!isMaxLevel ? `<p>次のレベルまで: ${requiredPoints} P</p>` : `<p>この形態は最大レベルです！</p>`}
+        let totalAttackPower = 0;
+        appData.characters.forEach(charData => {
+            const master = CHARACTER_MASTER_DATA[charData.id];
+            const currentEvolution = master.evolutions[charData.evolutionIndex];
             
-            ${isMaxLevel
-                ? `<button class="evolve-button" data-character-id="${charData.id}">進化する！</button>`
-                : `<button class="level-up-button" data-character-id="${charData.id}" ${canLevelUp ? '' : 'disabled'}>レベルアップ！</button>`
-            }
-        `;
-        characterListContainerEl.appendChild(card);
-    });
+            const maxLevel = currentEvolution.maxLevel;
+            const isMaxLevel = charData.level >= maxLevel;
+            
+            const attackPower = master.initialAttack * charData.level;
+            totalAttackPower += attackPower;
+            
+            const requiredPoints = (charData.level + 1) * 10;
+            const canLevelUp = appData.totalPoints >= requiredPoints && !isMaxLevel;
+            
+            const card = document.createElement('div');
+            card.className = 'card character-card';
+            card.innerHTML = `
+                <img src="${currentEvolution.image}" alt="${currentEvolution.name}">
+                <h3>${currentEvolution.name} (Lv. ${charData.level})</h3>
+                <p>ランク: ${currentEvolution.rank}</p>
+                <p>攻撃力: ${attackPower}</p>
+                ${!isMaxLevel ? `<p>次のレベルまで: ${requiredPoints} P</p>` : `<p>この形態は最大レベルです！</p>`}
+                
+                ${isMaxLevel && master.evolutions[charData.evolutionIndex + 1]
+                    ? `<button class="evolve-button" data-character-id="${charData.id}">進化する！</button>`
+                    : `<button class="level-up-button" data-character-id="${charData.id}" ${canLevelUp ? '' : 'disabled'}>レベルアップ！</button>`
+                }
+            `;
+            characterListContainerEl.appendChild(card);
+        });
 
-    totalAttackPowerEl.textContent = totalAttackPower;
-    totalCharacterCountEl.textContent = appData.characters.length;
+        totalAttackPowerEl.textContent = totalAttackPower;
+        totalCharacterCountEl.textContent = appData.characters.length;
 
-    // 「レベルアップ」ボタンにイベントリスナーを設定
-    document.querySelectorAll('.level-up-button').forEach(button => {
-        button.addEventListener('click', handleLevelUpClick);
-    });
-    // 「進化」ボタンにイベントリスナーを設定
-    document.querySelectorAll('.evolve-button').forEach(button => {
-        button.addEventListener('click', handleEvolveClick);
-    });
+        document.querySelectorAll('.level-up-button').forEach(button => {
+            button.addEventListener('click', handleLevelUpClick);
+        });
+        document.querySelectorAll('.evolve-button').forEach(button => {
+            button.addEventListener('click', handleEvolveClick);
+        });
 
-    if (appData.characters.some(char => char.level >= 30)) {
-        characterHintEl.textContent = '次のキャラクターを追加する準備ができました！';
-    } else {
-        characterHintEl.textContent = 'キャラクターを30レベルにしてみよう。';
+        if (appData.characters.some(char => char.level >= 30)) {
+            characterHintEl.textContent = '次のキャラクターを追加する準備ができました！';
+        } else {
+            characterHintEl.textContent = 'キャラクターを30レベルにしてみよう。';
+        }
     }
-}
 
-    // main.js の handleEvolveClick 関数
-
-function handleEvolveClick(event) {
-    const charId = parseInt(event.target.dataset.characterId, 10);
-    const characterToUpdate = appData.characters.find(c => c.id === charId);
-    
-    if (!characterToUpdate) return;
-
-    const master = CHARACTER_MASTER_DATA[characterToUpdate.id];
-    const nextEvolutionIndex = characterToUpdate.evolutionIndex + 1;
-    
-    // 次の進化先が存在するかチェック
-    if (master.evolutions[nextEvolutionIndex]) {
-        // 進化段階を1つ進める
-        characterToUpdate.evolutionIndex = nextEvolutionIndex;
-        // レベルを1に戻す
-        characterToUpdate.level = 1;
+    function handleLevelUpClick(event) {
+        const charId = parseInt(event.target.dataset.characterId, 10);
+        const characterToUpdate = appData.characters.find(c => c.id === charId);
         
-        alert('おめでとう！キャラクターが進化したよ！');
+        const requiredPoints = (characterToUpdate.level + 1) * 10;
         
-        saveData();
-        updatePointDisplay();
-        renderCharacters(); // 画面を再描画
-    } else {
-        alert('このキャラクターはこれ以上進化できません！');
-    }
-}
+        if (appData.totalPoints >= requiredPoints) {
+            appData.totalPoints -= requiredPoints;
+            characterToUpdate.level++;
             
             saveData();
             updatePointDisplay();
@@ -333,12 +231,34 @@ function handleEvolveClick(event) {
         }
     }
 
+    function handleEvolveClick(event) {
+        const charId = parseInt(event.target.dataset.characterId, 10);
+        const characterToUpdate = appData.characters.find(c => c.id === charId);
+        
+        if (!characterToUpdate) return;
+
+        const master = CHARACTER_MASTER_DATA[characterToUpdate.id];
+        const nextEvolutionIndex = characterToUpdate.evolutionIndex + 1;
+        
+        if (master.evolutions[nextEvolutionIndex]) {
+            characterToUpdate.evolutionIndex = nextEvolutionIndex;
+            characterToUpdate.level = 1;
+            
+            alert('おめでとう！キャラクターが進化したよ！');
+            
+            saveData();
+            updatePointDisplay();
+            renderCharacters();
+        } else {
+            alert('このキャラクターはこれ以上進化できません！');
+        }
+    }
+
     // --- ページ3: カレンダー機能 ---
     const currentMonthYearEl = document.getElementById('currentMonthYear');
     const prevMonthBtn = document.getElementById('prevMonthBtn');
     const nextMonthBtn = document.getElementById('nextMonthBtn');
     const calendarGridEl = document.getElementById('calendarGrid');
-
     let currentCalendarDate = new Date();
 
     function initializeCalendarPage() {
