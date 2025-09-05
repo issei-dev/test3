@@ -259,12 +259,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevMonthBtn = document.getElementById('prevMonthBtn');
     const nextMonthBtn = document.getElementById('nextMonthBtn');
     const calendarGridEl = document.getElementById('calendarGrid');
-    const calendarControls = document.getElementById('calendarControls');
     let currentCalendarDate = new Date();
 
     function initializeCalendarPage() {
         renderCalendar(currentCalendarDate);
-        renderCalendarControls();
     }
 
     function renderCalendar(date) {
@@ -304,35 +302,6 @@ document.addEventListener('DOMContentLoaded', () => {
             calendarGridEl.appendChild(dayEl);
             day.setDate(day.getDate() + 1);
         }
-    }
-
-    function renderCalendarControls() {
-        calendarControls.innerHTML = `
-            <button id="resetAppBtn" class="main-button danger-button">リセット</button>
-        `;
-
-        document.getElementById('resetAppBtn').addEventListener('click', () => {
-            const password = prompt('アプリをリセットするにはパスワードを入力してください:');
-            if (password === 'Admin') {
-                if (confirm('本当にすべてのデータをリセットしますか？この操作は元に戻せません。')) {
-                    // 全データのリセット
-                    appData = {
-                        totalPoints: 0,
-                        characters: [],
-                        stamps: {}
-                    };
-                    saveData();
-                    alert('すべてのデータがリセットされました。');
-                    
-                    // ページを再初期化
-                    initializeCharacterPage();
-                    initializeStampPage();
-                    renderCalendar(currentCalendarDate);
-                }
-            } else {
-                alert('パスワードが正しくありません。');
-            }
-        });
     }
 
     prevMonthBtn.addEventListener('click', () => {
