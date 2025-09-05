@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    function saveData() {
+     function saveData() {
         localStorage.setItem('studyApp', JSON.stringify(appData));
     }
 
@@ -161,6 +161,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalAttackPowerEl = document.getElementById('totalAttackPower');
     const totalCharacterCountEl = document.getElementById('totalCharacterCount');
 
+    // ポップアップ関連の要素を取得
+    const imageModal = document.getElementById('image-modal');
+    const expandedImage = document.getElementById('expanded-image');
+    const modalClose = document.getElementsByClassName('modal-close')[0];
+
     function initializeCharacterPage() {
         loadData();
         if (appData.characters.length < 3) {
@@ -221,17 +226,41 @@ document.addEventListener('DOMContentLoaded', () => {
         totalAttackPowerEl.textContent = totalAttackPower;
         totalCharacterCountEl.textContent = appData.characters.length;
 
+        // イベントリスナーを再設定
         document.querySelectorAll('.level-up-button').forEach(button => {
             button.addEventListener('click', handleLevelUpClick);
         });
         document.querySelectorAll('.evolve-button').forEach(button => {
             button.addEventListener('click', handleEvolveClick);
         });
+        
+        // 画像にクリックイベントリスナーを追加
+        document.querySelectorAll('.character-card img').forEach(image => {
+            image.addEventListener('click', handleImageClick);
+        });
+
 
         if (appData.characters.length < 3) {
             characterHintEl.textContent = 'キャラクターを30レベルにすると、新しいキャラクターが追加できます！';
         } else {
             characterHintEl.textContent = 'すべてのキャラクターが揃っています！';
+        }
+    }
+
+    // 画像クリック時の処理
+    function handleImageClick(event) {
+        expandedImage.src = event.target.src;
+        imageModal.style.display = 'flex';
+    }
+
+    // ポップアップを閉じる処理
+    modalClose.onclick = () => {
+        imageModal.style.display = 'none';
+    }
+
+    imageModal.onclick = (event) => {
+        if (event.target === imageModal) {
+            imageModal.style.display = 'none';
         }
     }
 
