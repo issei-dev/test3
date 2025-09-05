@@ -254,3 +254,31 @@ main {
     box-sizing: border-box;
     text-align: center;
 }
+/* --- キャラクターページのヘッダー --- */
+.character-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+    text-align: center;
+}
+
+.character-header h1 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+}
+
+.total-status {
+    font-weight: bold;
+    font-size: 1em;
+    color: #555;
+    margin: 0;
+    min-width: 120px;
+}
+
+.total-status span {
+    color: var(--primary-color);
+}
