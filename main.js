@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    function saveData() {
+   function saveData() {
         localStorage.setItem('studyApp', JSON.stringify(appData));
     }
 
@@ -162,14 +162,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalCharacterCountEl = document.getElementById('totalCharacterCount');
 
     function initializeCharacterPage() {
-        loadData();
-        // キャラクターが3体未満の場合、追加する
         if (appData.characters.length < 3) {
-            appData.characters.push({
-                id: appData.characters.length + 1, // 新しいキャラクターIDを割り当てる
-                level: 1,
-                evolutionIndex: 0
-            });
+            if (appData.characters.length === 0) {
+                appData.characters.push({
+                    id: 1,
+                    level: 1,
+                    evolutionIndex: 0
+                });
+                appData.characters.push({
+                    id: 2,
+                    level: 1,
+                    evolutionIndex: 0
+                });
+            } else if (appData.characters.length === 2) {
+                appData.characters.push({
+                    id: 3,
+                    level: 1,
+                    evolutionIndex: 0
+                });
+            }
             saveData();
         }
         updatePointDisplay();
@@ -215,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         totalAttackPowerEl.textContent = totalAttackPower;
         totalCharacterCountEl.textContent = appData.characters.length;
-        
+
         document.querySelectorAll('.level-up-button').forEach(button => {
             button.addEventListener('click', handleLevelUpClick);
         });
