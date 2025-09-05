@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalCharacterCountEl = document.getElementById('totalCharacterCount');
 
     function initializeCharacterPage() {
-        if (appData.characters.length < 3) {
+        if (appData.characters.length < 5) {
             if (appData.characters.length === 0) {
                 appData.characters.push({
                     id: 1,
