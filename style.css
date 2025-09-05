@@ -28,13 +28,16 @@ header {
     font-weight: bold;
 }
 
+/* --- 管理者メニューのスタイル --- */
 .nav-menu {
+    position: fixed; /* 画面に対して固定配置 */
+    bottom: 0; /* 画面の一番下に配置 */
+    left: 0; /* 画面の左端に配置 */
+    width: 100%; /* 画面の幅いっぱいに広げる */
     display: flex;
     justify-content: space-around;
     background-color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: sticky;
-    top: 0;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* 上に影を付ける */
     z-index: 1000;
 }
 
