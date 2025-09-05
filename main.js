@@ -98,20 +98,18 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // 押されたスタンプのエフェクトを表示
         const stampEffectContainer = document.createElement('div');
         stampEffectContainer.className = 'stamp-effect-container';
 
         for (let i = 0; i < stampedCountToday; i++) {
             const stampIcon = document.createElement('span');
             stampIcon.className = 'stamp-icon';
-            stampIcon.textContent = '✅'; // チェックマークの絵文字
+            stampIcon.textContent = '✅';
             stampEffectContainer.appendChild(stampIcon);
         }
 
         stampContainerEl.appendChild(stampEffectContainer);
 
-        // スタンプボタンを表示
         const stampButton = document.createElement('button');
         stampButton.className = 'main-button';
         stampButton.textContent = '今日のスタンプ';
@@ -193,6 +191,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const requiredPoints = (charData.level + 1) * 10;
             const canLevelUp = appData.totalPoints >= requiredPoints && !isMaxLevel;
             
+            const requiredEvolvePoints = 500;
+            const canEvolve = appData.totalPoints >= requiredEvolvePoints;
+
             const card = document.createElement('div');
             card.className = 'card character-card';
             card.innerHTML = `
@@ -203,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ${!isMaxLevel ? `<p>次のレベルまで: ${requiredPoints} P</p>` : `<p>この形態は最大レベルです！</p>`}
                 
                 ${isMaxLevel && master.evolutions[charData.evolutionIndex + 1]
-                    ? `<button class="evolve-button" data-character-id="${charData.id}">進化する！</button>`
+                    ? `<button class="evolve-button" data-character-id="${charData.id}" ${canEvolve ? '' : 'disabled'}>進化する！(${requiredEvolvePoints}P)</button>`
                     : `<button class="level-up-button" data-character-id="${charData.id}" ${canLevelUp ? '' : 'disabled'}>レベルアップ！</button>`
                 }
             `;
@@ -250,13 +251,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const characterToUpdate = appData.characters.find(c => c.id === charId);
         
         if (!characterToUpdate) return;
+        
+        const requiredEvolvePoints = 500;
+        if (appData.totalPoints < requiredEvolvePoints) {
+            alert('進化に必要なポイントが足りません！');
+            return;
+        }
 
         const master = CHARACTER_MASTER_DATA[characterToUpdate.id];
         const nextEvolutionIndex = characterToUpdate.evolutionIndex + 1;
         
         if (master.evolutions[nextEvolutionIndex]) {
+            appData.totalPoints -= requiredEvolvePoints; // 進化にポイントを消費
             characterToUpdate.evolutionIndex = nextEvolutionIndex;
-            characterToUpdate.level = 1;
+            characterToUpdate.level = 1; // 進化時にレベルを1に戻す
             
             alert('おめでとう！キャラクターが進化したよ！');
             
