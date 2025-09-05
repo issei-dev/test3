@@ -1,32 +1,31 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- アプリケーションデータの管理 ---
-    // --- アプリケーションデータの管理 ---
-let appData = {
-    totalPoints: 0,
-    characters: [],
-    stamps: {}
-};
+    let appData = {
+        totalPoints: 0,
+        characters: [],
+        stamps: {}
+    };
 
-// 攻撃力の設定を追加
-const CHARACTER_MASTER_DATA = {
-    1: {
-        initialAttack: 10, // ひよこナイトの初期攻撃力
-        evolutions: [
-            { name: "ひよこナイト", image: "images-n001.png", rank: "D" },
-            { name: "にわとり騎士", image: "images/niwatori_knight.png", rank: "C" },
-            { name: "イーグルライダー", image: "images/eagle_rider.png", rank: "A" },
-        ]
-    },
-    2: {
-        initialAttack: 15, // みならい魔法使いの初期攻撃力
-        evolutions: [
-            { name: "みならい魔法使い", image: "images/minarai_mahoutsukai.png", rank: "D" },
-            { name: "一人前の魔導士", image: "images/ichininmae_madoushi.png", rank: "B" },
-            { name: "大賢者", image: "images/daikenja.png", rank: "S" },
-        ]
-    }
-};
+    const CHARACTER_MASTER_DATA = {
+        1: {
+            initialAttack: 10,
+            evolutions: [
+                { name: "ひよこナイト", image: "images/hiyoko_knight.png", rank: "D" },
+                { name: "にわとり騎士", image: "images/niwatori_knight.png", rank: "C" },
+                { name: "イーグルライダー", image: "images/eagle_rider.png", rank: "A" },
+            ]
+        },
+        2: {
+            initialAttack: 15,
+            evolutions: [
+                { name: "みならい魔法使い", image: "images/minarai_mahoutsukai.png", rank: "D" },
+                { name: "一人前の魔導士", image: "images/ichininmae_madoushi.png", rank: "B" },
+                { name: "大賢者", image: "images/daikenja.png", rank: "S" },
+            ]
+        }
+    };
+
     function saveData() {
         localStorage.setItem('studyApp', JSON.stringify(appData));
     }
@@ -47,21 +46,18 @@ const CHARACTER_MASTER_DATA = {
             e.preventDefault();
             const targetPageId = e.target.closest('.nav-item').dataset.page;
             
-            // すべてのページを非表示にし、アクティブクラスを削除
             pages.forEach(page => page.classList.remove('active-page'));
             navLinks.forEach(nav => nav.classList.remove('active'));
 
-            // 対象ページとナビゲーションを表示/アクティブ化
             document.getElementById(targetPageId).classList.add('active-page');
             e.target.closest('.nav-item').classList.add('active');
 
-            // ページが切り替わったときに各ページを初期化
             if (targetPageId === 'stamp') {
                 initializeStampPage();
             } else if (targetPageId === 'characters') {
                 initializeCharacterPage();
             } else if (targetPageId === 'calendar') {
-                renderCalendar(new Date());
+                initializeCalendarPage();
             }
         });
     });
@@ -83,8 +79,10 @@ const CHARACTER_MASTER_DATA = {
     }
 
     function updatePointDisplay() {
-        totalPointsDisplay_stamp.textContent = appData.totalPoints;
-        totalPointsDisplay_characters.textContent = appData.totalPoints;
+        const totalPointsDisplay_stamp = document.getElementById('totalPointsDisplay_stamp');
+        const totalPointsDisplay_characters = document.getElementById('totalPointsDisplay_characters');
+        if(totalPointsDisplay_stamp) totalPointsDisplay_stamp.textContent = appData.totalPoints;
+        if(totalPointsDisplay_characters) totalPointsDisplay_characters.textContent = appData.totalPoints;
     }
 
     function renderStamps() {
@@ -141,84 +139,73 @@ const CHARACTER_MASTER_DATA = {
 
     // --- ページ2: キャラクター機能 ---
     const totalPointsDisplay_characters = document.getElementById('totalPointsDisplay_characters');
-const characterListContainerEl = document.getElementById('characterListContainer');
-const characterHintEl = document.getElementById('characterHint');
+    const characterListContainerEl = document.getElementById('characterListContainer');
+    const characterHintEl = document.getElementById('characterHint');
+    const totalAttackPowerEl = document.getElementById('totalAttackPower');
+    const totalCharacterCountEl = document.getElementById('totalCharacterCount');
 
-// 新しい要素を取得
-const totalAttackPowerEl = document.getElementById('totalAttackPower');
-const totalCharacterCountEl = document.getElementById('totalCharacterCount');
-
-function initializeCharacterPage() {
-    // 初期キャラクターを2体にする
-    if (appData.characters.length === 0) {
-        appData.characters.push({
-            id: 1,
-            level: 1,
-            evolutionIndex: 0
-        });
-        appData.characters.push({
-            id: 2,
-            level: 1,
-            evolutionIndex: 0
-        });
-        saveData();
+    function initializeCharacterPage() {
+        if (appData.characters.length === 0) {
+            appData.characters.push({
+                id: 1,
+                level: 1,
+                evolutionIndex: 0
+            });
+            appData.characters.push({
+                id: 2,
+                level: 1,
+                evolutionIndex: 0
+            });
+            saveData();
+        }
+        updatePointDisplay();
+        renderCharacters();
     }
-    updatePointDisplay();
-    renderCharacters();
-}
 
-function renderCharacters() {
-    characterListContainerEl.innerHTML = '';
-    
-    // 総攻撃力を計算
-    let totalAttackPower = 0;
-    appData.characters.forEach(charData => {
-        const master = CHARACTER_MASTER_DATA[charData.id];
-        const attackPower = master.initialAttack * charData.level;
-        totalAttackPower += attackPower;
+    function renderCharacters() {
+        characterListContainerEl.innerHTML = '';
         
-        const currentEvolution = master.evolutions[charData.evolutionIndex];
-        const requiredPoints = (charData.level + 1) * 10;
-        const canLevelUp = appData.totalPoints >= requiredPoints && charData.level < 99;
-        
-        const card = document.createElement('div');
-        card.className = 'card character-card';
-        card.innerHTML = `
-            <img src="${currentEvolution.image}" alt="${currentEvolution.name}">
-            <h3>${currentEvolution.name} (Lv. ${charData.level})</h3>
-            <p>ランク: ${currentEvolution.rank}</p>
-            <p>攻撃力: ${attackPower}</p>
-            <p>次のレベルまで: ${requiredPoints} P</p>
-            <button class="level-up-button" data-character-id="${charData.id}" ${canLevelUp ? '' : 'disabled'}>
-                レベルアップ！
-            </button>
-        `;
-        characterListContainerEl.appendChild(card);
-    });
+        let totalAttackPower = 0;
+        appData.characters.forEach(charData => {
+            const master = CHARACTER_MASTER_DATA[charData.id];
+            const attackPower = master.initialAttack * charData.level;
+            totalAttackPower += attackPower;
+            
+            const currentEvolution = master.evolutions[charData.evolutionIndex];
+            const requiredPoints = (charData.level + 1) * 10;
+            const canLevelUp = appData.totalPoints >= requiredPoints && charData.level < 99;
+            
+            const card = document.createElement('div');
+            card.className = 'card character-card';
+            card.innerHTML = `
+                <img src="${currentEvolution.image}" alt="${currentEvolution.name}">
+                <h3>${currentEvolution.name} (Lv. ${charData.level})</h3>
+                <p>ランク: ${currentEvolution.rank}</p>
+                <p>攻撃力: ${attackPower}</p>
+                <p>次のレベルまで: ${requiredPoints} P</p>
+                <button class="level-up-button" data-character-id="${charData.id}" ${canLevelUp ? '' : 'disabled'}>
+                    レベルアップ！
+                </button>
+            `;
+            characterListContainerEl.appendChild(card);
+        });
 
-    // 総攻撃力と総キャラクター数を更新
-    totalAttackPowerEl.textContent = totalAttackPower;
-    totalCharacterCountEl.textContent = appData.characters.length;
+        totalAttackPowerEl.textContent = totalAttackPower;
+        totalCharacterCountEl.textContent = appData.characters.length;
 
-    document.querySelectorAll('.level-up-button').forEach(button => {
-        button.addEventListener('click', handleLevelUpClick);
-    });
-
-    // ヒントの表示ロジックも調整
-    if (appData.characters.some(char => char.level >= 30)) {
-        characterHintEl.textContent = '次のキャラクターを追加する準備ができました！';
-    } else {
-        characterHintEl.textContent = 'キャラクターを30レベルにしてみよう。';
-    }
-}
-        
         document.querySelectorAll('.level-up-button').forEach(button => {
             button.addEventListener('click', handleLevelUpClick);
         });
+
+        if (appData.characters.some(char => char.level >= 30)) {
+            characterHintEl.textContent = '次のキャラクターを追加する準備ができました！';
+        } else {
+            characterHintEl.textContent = 'キャラクターを30レベルにしてみよう。';
+        }
     }
 
     function handleLevelUpClick(event) {
-        const charId = parseInt(event.target.dataset.characterId, 10);
+        const charId = parseInt(event.target.dataset.character-id, 10);
         const characterToUpdate = appData.characters.find(c => c.id === charId);
         
         const requiredPoints = (characterToUpdate.level + 1) * 10;
@@ -248,6 +235,10 @@ function renderCharacters() {
     const calendarGridEl = document.getElementById('calendarGrid');
 
     let currentCalendarDate = new Date();
+
+    function initializeCalendarPage() {
+        renderCalendar(currentCalendarDate);
+    }
 
     function renderCalendar(date) {
         calendarGridEl.innerHTML = '';
