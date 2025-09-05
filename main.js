@@ -144,18 +144,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalAttackPowerEl = document.getElementById('totalAttackPower');
     const totalCharacterCountEl = document.getElementById('totalCharacterCount');
 
-    function initializeCharacterPage() {
-        if (appData.characters.length === 0) {
+    // initializeCharacterPage関数の一部（修正案）
+function initializeCharacterPage() {
+    // まだキャラクターデータがない場合（アプリ初回起動時）
+    if (appData.characters.length === 0) {
+        // CHARACTER_MASTER_DATAのすべてのキャラクターを初期データとして追加
+        Object.keys(CHARACTER_MASTER_DATA).forEach(charId => {
             appData.characters.push({
-                id: 1,
+                id: parseInt(charId),
                 level: 1,
                 evolutionIndex: 0
             });
-            appData.characters.push({
-                id: 2,
-                level: 1,
-                evolutionIndex: 0
-            });
+        });
             saveData();
         }
         updatePointDisplay();
