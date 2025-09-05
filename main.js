@@ -219,10 +219,10 @@ document.addEventListener('DOMContentLoaded', () => {
             button.addEventListener('click', handleEvolveClick);
         });
 
-        if (appData.characters.some(char => char.level >= 30)) {
-            characterHintEl.textContent = '次のキャラクターを追加する準備ができました！';
+       if (appData.characters.length < 5) {
+            characterHintEl.textContent = 'キャラクターを30レベルにすると、新しいキャラクターが追加できます！';
         } else {
-            characterHintEl.textContent = 'キャラクターを30レベルにしてみよう。';
+            characterHintEl.textContent = 'すべてのキャラクターが揃っています！';
         }
     }
 
