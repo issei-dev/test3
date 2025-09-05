@@ -28,6 +28,40 @@ header {
     font-weight: bold;
 }
 
+main {
+    padding: 20px;
+    /* ナビゲーションメニューの高さ分、下部に余白を追加 */
+    padding-bottom: 80px; 
+}
+
+.page {
+    display: none;
+}
+
+.page.active-page {
+    display: block;
+}
+
+.card {
+    background-color: var(--card-background);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.point-display {
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.point-display span {
+    color: var(--secondary-color);
+}
+
+/* --- 下部のナビゲーションメニューのスタイル --- */
 .nav-menu {
     position: fixed;
     bottom: 0;
@@ -64,38 +98,6 @@ header {
     font-size: 1.2em;
     display: block;
     margin-bottom: 5px;
-}
-
-main {
-    padding: 20px;
-    padding-bottom: 80px;
-}
-
-.page {
-    display: none;
-}
-
-.page.active-page {
-    display: block;
-}
-
-.card {
-    background-color: var(--card-background);
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-.point-display {
-    text-align: center;
-    font-size: 1.2em;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-.point-display span {
-    color: var(--secondary-color);
 }
 
 /* --- スタンプページ --- */
