@@ -169,7 +169,39 @@ main {
     background-color: #bdc3c7;
     cursor: not-allowed;
 }
+/* --- キャラクターページ --- */
+.character-card img {
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+    display: block;
+    margin: 0 auto 15px;
+}
+/* ... (中略) ... */
+.level-up-button:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+}
 
+/* 新しく追加するスタイル */
+.evolve-button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    font-size: 1em;
+    font-weight: bold;
+    color: white;
+    background-color: #3498db; /* 青色 */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.evolve-button:hover {
+    background-color: #2980b9;
+}
 /* --- カレンダーページ --- */
 .calendar-container {
     max-width: 600px;
