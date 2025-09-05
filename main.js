@@ -40,17 +40,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelectorAll('.nav-menu a');
     const pages = document.querySelectorAll('.page');
 
+    function showPage(pageId) {
+        pages.forEach(page => page.classList.remove('active-page'));
+        document.getElementById(pageId).classList.add('active-page');
+        navLinks.forEach(link => link.closest('.nav-item').classList.remove('active'));
+        document.querySelector(`.nav-item[data-page="${pageId}"]`).classList.add('active');
+    }
+
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const targetPageId = e.target.closest('.nav-item').dataset.page;
             
-            pages.forEach(page => page.classList.remove('active-page'));
-            navLinks.forEach(nav => nav.classList.remove('active'));
-
-            document.getElementById(targetPageId).classList.add('active-page');
-            e.target.closest('.nav-item').classList.add('active');
-
+            showPage(targetPageId);
+            
             if (targetPageId === 'stamp') {
                 initializeStampPage();
             } else if (targetPageId === 'characters') {
@@ -183,4 +186,167 @@ document.addEventListener('DOMContentLoaded', () => {
                 <h3>${currentEvolution.name} (Lv. ${charData.level})</h3>
                 <p>ランク: ${currentEvolution.rank}</p>
                 <p>攻撃力: ${attackPower}</p>
-                ${!isMaxLevel ? `<p>次のレベルまで: ${requiredPoints} P</p>` : `<p>この形態は最大
+                ${!isMaxLevel ? `<p>次のレベルまで: ${requiredPoints} P</p>` : `<p>この形態は最大レベルです！</p>`}
+                
+                ${isMaxLevel && master.evolutions[charData.evolutionIndex + 1]
+                    ? `<button class="evolve-button" data-character-id="${charData.id}">進化する！</button>`
+                    : `<button class="level-up-button" data-character-id="${charData.id}" ${canLevelUp ? '' : 'disabled'}>レベルアップ！</button>`
+                }
+            `;
+            characterListContainerEl.appendChild(card);
+        });
+
+        totalAttackPowerEl.textContent = totalAttackPower;
+        totalCharacterCountEl.textContent = appData.characters.length;
+
+        document.querySelectorAll('.level-up-button').forEach(button => {
+            button.addEventListener('click', handleLevelUpClick);
+        });
+        document.querySelectorAll('.evolve-button').forEach(button => {
+            button.addEventListener('click', handleEvolveClick);
+        });
+
+        if (appData.characters.some(char => char.level >= 30)) {
+            characterHintEl.textContent = '次のキャラクターを追加する準備ができました！';
+        } else {
+            characterHintEl.textContent = 'キャラクターを30レベルにしてみよう。';
+        }
+    }
+
+    function handleLevelUpClick(event) {
+        const charId = parseInt(event.target.dataset.characterId, 10);
+        const characterToUpdate = appData.characters.find(c => c.id === charId);
+        
+        const requiredPoints = (characterToUpdate.level + 1) * 10;
+        
+        if (appData.totalPoints >= requiredPoints) {
+            appData.totalPoints -= requiredPoints;
+            characterToUpdate.level++;
+            
+            saveData();
+            updatePointDisplay();
+            renderCharacters();
+        } else {
+            alert('ポイントが足りません！');
+        }
+    }
+
+    function handleEvolveClick(event) {
+        const charId = parseInt(event.target.dataset.characterId, 10);
+        const characterToUpdate = appData.characters.find(c => c.id === charId);
+        
+        if (!characterToUpdate) return;
+
+        const master = CHARACTER_MASTER_DATA[characterToUpdate.id];
+        const nextEvolutionIndex = characterToUpdate.evolutionIndex + 1;
+        
+        if (master.evolutions[nextEvolutionIndex]) {
+            characterToUpdate.evolutionIndex = nextEvolutionIndex;
+            characterToUpdate.level = 1;
+            
+            alert('おめでとう！キャラクターが進化したよ！');
+            
+            saveData();
+            updatePointDisplay();
+            renderCharacters();
+        } else {
+            alert('このキャラクターはこれ以上進化できません！');
+        }
+    }
+
+    // --- ページ3: カレンダー機能 ---
+    const currentMonthYearEl = document.getElementById('currentMonthYear');
+    const prevMonthBtn = document.getElementById('prevMonthBtn');
+    const nextMonthBtn = document.getElementById('nextMonthBtn');
+    const calendarGridEl = document.getElementById('calendarGrid');
+    const calendarControls = document.getElementById('calendarControls');
+    let currentCalendarDate = new Date();
+
+    function initializeCalendarPage() {
+        renderCalendar(currentCalendarDate);
+        renderCalendarControls();
+    }
+
+    function renderCalendar(date) {
+        calendarGridEl.innerHTML = '';
+        const year = date.getFullYear();
+        const month = date.getMonth();
+
+        currentMonthYearEl.textContent = `${year}年 ${month + 1}月`;
+
+        const firstDayOfMonth = new Date(year, month, 1);
+        const lastDayOfMonth = new Date(year, month + 1, 0);
+        const startDate = new Date(firstDayOfMonth);
+        startDate.setDate(firstDayOfMonth.getDate() - firstDayOfMonth.getDay());
+        
+        let day = new Date(startDate);
+        while (day <= lastDayOfMonth || day.getDay() !== 0) {
+            const dayEl = document.createElement('div');
+            dayEl.className = 'calendar-day';
+            if (day.getMonth() !== month) {
+                dayEl.classList.add('not-current-month');
+            }
+
+            const dayNumberEl = document.createElement('div');
+            dayNumberEl.className = 'day-number';
+            dayNumberEl.textContent = day.getDate();
+            dayEl.appendChild(dayNumberEl);
+
+            const formattedDate = day.toISOString().split('T')[0];
+            const stampsForDay = appData.stamps[formattedDate] || [];
+            stampsForDay.forEach(stamp => {
+                const stampItemEl = document.createElement('div');
+                stampItemEl.className = 'stamp-item';
+                stampItemEl.textContent = stamp.text;
+                dayEl.appendChild(stampItemEl);
+            });
+
+            calendarGridEl.appendChild(dayEl);
+            day.setDate(day.getDate() + 1);
+        }
+    }
+
+    function renderCalendarControls() {
+        calendarControls.innerHTML = `
+            <button id="resetAppBtn" class="main-button danger-button">リセット</button>
+        `;
+
+        document.getElementById('resetAppBtn').addEventListener('click', () => {
+            const password = prompt('アプリをリセットするにはパスワードを入力してください:');
+            if (password === 'Admin') {
+                if (confirm('本当にすべてのデータをリセットしますか？この操作は元に戻せません。')) {
+                    // 全データのリセット
+                    appData = {
+                        totalPoints: 0,
+                        characters: [],
+                        stamps: {}
+                    };
+                    saveData();
+                    alert('すべてのデータがリセットされました。');
+                    
+                    // ページを再初期化
+                    initializeCharacterPage();
+                    initializeStampPage();
+                    renderCalendar(currentCalendarDate);
+                }
+            } else {
+                alert('パスワードが正しくありません。');
+            }
+        });
+    }
+
+    prevMonthBtn.addEventListener('click', () => {
+        currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+        renderCalendar(currentCalendarDate);
+    });
+
+    nextMonthBtn.addEventListener('click', () => {
+        currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+        renderCalendar(currentCalendarDate);
+    });
+
+    // --- 初期化処理 ---
+    loadData();
+    initializeStampPage();
+    showPage('stamp');
+});
