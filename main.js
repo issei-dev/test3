@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const CHARACTER_MASTER_DATA = {
         1: {
             evolutions: [
-                { name: "ひよこナイト", image: "images/images-n001.png", rank: "Normal", initialAttack: 10, maxLevel: 30 },
+                { name: "ひよこナイト", image: "images-n001.png", rank: "Normal", initialAttack: 10, maxLevel: 30 },
                 { name: "にわとり騎士", image: "images/niwatori_knight.png", rank: "Rare", initialAttack: 25, maxLevel: 50 },
                 { name: "イーグルライダー", image: "images/eagle_rider.png", rank: "Super Rare", initialAttack: 50, maxLevel: 75 },
             ]
