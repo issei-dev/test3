@@ -16,42 +16,19 @@
     </header>
 
     <nav class="nav-menu">
-<button id="adminMenuButton" class="admin-button">管理者メニュー</button>
-
-<div id="adminModal" class="modal-overlay">
-    <div class="modal-content">
-        <h2>管理者メニュー</h2>
-        <p>パスワードを入力してください。</p>
-        <input type="password" id="adminPasswordInput" class="text-input" placeholder="パスワード">
-        <div class="button-group">
-            <button id="passwordSubmitButton" class="main-button">確定</button>
-            <button id="closeModalButton" class="main-button">閉じる</button>
-        </div>
-        <div id="adminControls" style="display:none;">
-            <h3>所有ポイントを任意で追加</h3>
-            <input type="number" id="pointInput" class="text-input" value="1000">
-            <button id="addPointsButton" class="main-button">ポイント追加</button>
-            
-            <h3>データリセット</h3>
-            <p>全てのポイントとキャラクターのデータを削除します。</p>
-            <button id="resetDataButton" class="main-button">リセット</button>
-        </div>
-        <p id="adminMessage" class="message"></p>
-    </div>
-</div>
-        <a href="#stamp" class="nav-item active" data-page="stamp">
-            <i class="fas fa-stamp"></i>
-            <span>スタンプ</span>
-        </a>
-        <a href="#characters" class="nav-item" data-page="characters">
-            <i class="fas fa-paw"></i>
-            <span>キャラクター</span>
-        </a>
-        <a href="#calendar" class="nav-item" data-page="calendar">
-            <i class="fas fa-calendar-alt"></i>
-            <span>カレンダー</span>
-        </a>
-    </nav>
+    <a href="#stamp" class="nav-item active" data-page="stamp">
+        <i class="fas fa-stamp"></i>
+        <span>スタンプ</span>
+    </a>
+    <a href="#characters" class="nav-item" data-page="characters">
+        <i class="fas fa-paw"></i>
+        <span>キャラクター</span>
+    </a>
+    <a href="#calendar" class="nav-item" data-page="calendar">
+        <i class="fas fa-calendar-alt"></i>
+        <span>カレンダー</span>
+    </a>
+</nav>
     
     <main>
         <div id="stamp" class="page active-page">
