@@ -314,3 +314,72 @@ main {
 .total-status span {
     color: var(--primary-color);
 }
+/* --- 管理者メニューのスタイル --- */
+.admin-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #7f8c8d;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 0.8em;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+    transition: background-color 0.3s;
+}
+
+.admin-button:hover {
+    background-color: #95a5a6;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h2 {
+    margin-top: 0;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.button-group .main-button {
+    width: 48%;
+}
+
+.message {
+    color: red;
+    margin-top: 10px;
+}
+
+#adminControls h3 {
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 5px;
+    margin-top: 20px;
+}
