@@ -114,21 +114,28 @@ h2 {
     padding: 10px;
 }
 
+/* character-card のスタイルを修正 */
+.character-card {
+    display: flex; /* Flexboxを有効にする */
+    flex-direction: column; /* 要素を縦に並べる */
+    align-items: center; /* 要素を中央に揃える */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s;
+    width: 200px; /* カード全体の幅を少し広くする */
+    margin: 10px;
+}
+
+/* character-card img のスタイルを修正 */
 .character-card img {
     width: 150px;
     height: 150px;
     object-fit: contain;
-    display: block;
-    margin: 0 auto 10px;
+    margin-bottom: 20px; /* 画像とボタンの間の余白を調整 */
 }
-    /* 追記: 拡大 */
-    transform: scale(1.5);
-    transform-origin: center; /* 中心を基準に拡大 */
-    margin-bottom: 30px; /* 拡大による要素の重なりを避けるため余白を調整 */
-}
-
-/* 拡大に合わせてカード全体のレイアウトを調整するかもしれないため、
-   必要に応じて.character-cardや.character-listのスタイルも調整してください。 */
 
 .level-up-button, .evolve-button {
     width: 100%;
