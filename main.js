@@ -11,17 +11,14 @@ document.addEventListener('DOMContentLoaded', () => {
         1: {
             initialAttack: 10,
             evolutions: [
-                { name: "ひよこナイト", image: "images-n001.png", rank: "D" },
-                { name: "にわとり騎士", image: "images/niwatori_knight.png", rank: "C" },
-                { name: "イーグルライダー", image: "images/eagle_rider.png", rank: "A" },
+                { name: "コドラゴン", image: "images-n001.png", rank: "Normal(ノーマル)" },
             ]
         },
         2: {
-            initialAttack: 15,
+            initialAttack: 30,
             evolutions: [
-                { name: "みならい魔法使い", image: "images/minarai_mahoutsukai.png", rank: "D" },
-                { name: "一人前の魔導士", image: "images/ichininmae_madoushi.png", rank: "B" },
-                { name: "大賢者", image: "images/daikenja.png", rank: "S" },
+                { name: "フレイムリザード", image: "images-r001.png", rank: "Rare(レア)" },
+               
             ]
         }
     };
