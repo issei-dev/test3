@@ -21,6 +21,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 { name: "大賢者", image: "images/daikenja.png", rank: "Ultimate Rare", initialAttack: 80, maxLevel: 99 },
             ]
         }
+         3: {
+            evolutions: [
+                { name: "3番目", image: "images-sr001.png", rank: "Normal", initialAttack: 15, maxLevel: 30 },
+                { name: "一人前の魔導士", image: "images/ichininmae_madoushi.png", rank: "Super Rare", initialAttack: 40, maxLevel: 75 },
+                { name: "大賢者", image: "images/daikenja.png", rank: "Ultimate Rare", initialAttack: 80, maxLevel: 99 },
+            ]
+        }
     };
 
     function saveData() {
