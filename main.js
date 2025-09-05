@@ -51,7 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById(targetPageId).classList.add('active-page');
             e.target.closest('.nav-item').classList.add('active');
 
-            // ページが切り替わったときに各ページを初期化
             if (targetPageId === 'stamp') {
                 initializeStampPage();
             } else if (targetPageId === 'characters') {
@@ -64,7 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- ページ1: スタンプ機能 ---
     const todayDateEl = document.getElementById('todayDate');
-    const totalPointsDisplay_stamp = document.getElementById('totalPointsDisplay_stamp');
     const stampContainerEl = document.getElementById('stampContainer');
     const stampInputEl = document.getElementById('stampInput');
     const completeStampButtonEl = document.getElementById('completeStampButton');
@@ -138,7 +136,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- ページ2: キャラクター機能 ---
-    const totalPointsDisplay_characters = document.getElementById('totalPointsDisplay_characters');
     const characterListContainerEl = document.getElementById('characterListContainer');
     const characterHintEl = document.getElementById('characterHint');
     const totalAttackPowerEl = document.getElementById('totalAttackPower');
@@ -232,33 +229,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handleEvolveClick(event) {
-    const charId = parseInt(event.target.dataset.characterId, 10);
-    const characterToUpdate = appData.characters.find(c => c.id === charId);
-    
-    if (!characterToUpdate) return;
+        const charId = parseInt(event.target.dataset.characterId, 10);
+        const characterToUpdate = appData.characters.find(c => c.id === charId);
+        
+        if (!characterToUpdate) return;
 
-    const master = CHARACTER_MASTER_DATA[characterToUpdate.id];
-    const nextEvolutionIndex = characterToUpdate.evolutionIndex + 1;
-    
-    if (master.evolutions[nextEvolutionIndex]) {
-        // 進化後の初期攻撃力を取得
-        const nextEvolutionInitialAttack = master.evolutions[nextEvolutionIndex].initialAttack;
+        const master = CHARACTER_MASTER_DATA[characterToUpdate.id];
+        const nextEvolutionIndex = characterToUpdate.evolutionIndex + 1;
         
-        characterToUpdate.evolutionIndex = nextEvolutionIndex;
-        characterToUpdate.level = 1;
-        
-        // 進化後の初期攻撃力で攻撃力を再設定（この例では不要ですが、将来的な拡張に備えてロジックを記述）
-        // 攻撃力はrenderCharactersで自動計算されるため、ここではレベルのみ変更します。
-        
-        alert('おめでとう！キャラクターが進化したよ！');
-        
-        saveData();
-        updatePointDisplay();
-        renderCharacters();
-    } else {
-        alert('このキャラクターはこれ以上進化できません！');
+        if (master.evolutions[nextEvolutionIndex]) {
+            characterToUpdate.evolutionIndex = nextEvolutionIndex;
+            characterToUpdate.level = 1;
+            
+            alert('おめでとう！キャラクターが進化したよ！');
+            
+            saveData();
+            updatePointDisplay();
+            renderCharacters();
+        } else {
+            alert('このキャラクターはこれ以上進化できません！');
+        }
     }
-}
 
     // --- ページ3: カレンダー機能 ---
     const currentMonthYearEl = document.getElementById('currentMonthYear');
@@ -323,4 +314,50 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 初期化処理 ---
     loadData();
     initializeStampPage();
+
+    // --- 管理者メニュー機能 ---
+    const adminButton = document.getElementById('adminButton');
+    const adminModal = document.getElementById('adminModal');
+    const closeModalButton = document.getElementById('closeModalButton');
+    const adminControls = document.getElementById('adminControls');
+
+    adminButton.addEventListener('click', () => {
+        adminModal.style.display = 'flex';
+        renderAdminControls();
+    });
+
+    closeModalButton.addEventListener('click', () => {
+        adminModal.style.display = 'none';
+    });
+
+    adminModal.addEventListener('click', (e) => {
+        if (e.target.id === 'adminModal') {
+            adminModal.style.display = 'none';
+        }
+    });
+
+    function renderAdminControls() {
+        adminControls.innerHTML = `
+            <div class="button-group">
+                <button id="add1000PointsBtn" class="main-button">1000P追加</button>
+                <button id="resetPointsBtn" class="main-button">ポイントリセット</button>
+            </div>
+        `;
+        
+        document.getElementById('add1000PointsBtn').addEventListener('click', () => {
+            appData.totalPoints += 1000;
+            saveData();
+            updatePointDisplay();
+            alert('1000ポイントを追加しました！');
+        });
+
+        document.getElementById('resetPointsBtn').addEventListener('click', () => {
+            if (confirm('本当にポイントをリセットしますか？')) {
+                appData.totalPoints = 0;
+                saveData();
+                updatePointDisplay();
+                alert('ポイントをリセットしました！');
+            }
+        });
+    }
 });
