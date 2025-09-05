@@ -1,182 +1,254 @@
 body {
     font-family: 'M PLUS Rounded 1c', sans-serif;
-    background-color: #ecf0f1;
-    color: #2c3e50;
     margin: 0;
-    padding: 0;
+    background-color: #f0f2f5;
+    color: #333;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
 header {
-    background-color: #3498db;
+    background-color: #6200ea;
     color: white;
-    text-align: center;
-    padding: 15px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.point-display {
-    font-size: 1.2em;
-    font-weight: bold;
+    padding: 15px 20px;
+    text-align: right;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 main {
-    flex: 1;
+    flex-grow: 1;
     padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .page {
-    width: 100%;
-    max-width: 600px;
     display: none;
-    animation: fadeIn 0.5s;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
 }
 
 .page.active-page {
     display: block;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+h2 {
+    color: #6200ea;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 700;
 }
 
-h2 {
-    color: #34495e;
-    border-bottom: 2px solid #3498db;
-    padding-bottom: 10px;
-    margin-top: 0;
+h3 {
+    color: #4a148c;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.point-display {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #4a148c;
+    margin-bottom: 15px;
+    text-align: right;
 }
 
 .card {
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background-color: #f9f9f9;
     padding: 20px;
-    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
 }
 
 .main-button {
-    display: block;
-    width: 100%;
-    padding: 15px;
-    font-size: 1em;
-    font-weight: bold;
-    color: white;
-    background-color: #3498db;
+    background-color: #03dac6;
+    color: #fff;
     border: none;
-    border-radius: 8px;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-size: 1.1em;
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.1s;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    width: 100%;
+    max-width: 200px;
+    margin-top: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .main-button:hover {
-    background-color: #2980b9;
-    transform: translateY(-2px);
+    background-color: #018786;
 }
 
-.main-button:active {
-    transform: translateY(0);
+input[type="text"] {
+    width: calc(100% - 20px);
+    padding: 12px;
+    margin-top: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    box-sizing: border-box;
 }
 
-.stamp-section, .input-section {
+.stamp-section {
     text-align: center;
     margin-top: 20px;
 }
 
-#stampInput {
-    width: calc(100% - 20px);
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #bdc3c7;
-    border-radius: 5px;
-    box-sizing: border-box;
+.stamp-effect-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    min-height: 40px; /* スタンプがないときでもスペースを確保 */
 }
 
-/* --- キャラクターページのスタイル --- */
+.stamp-icon {
+    font-size: 2em;
+    animation: bounceIn 0.5s ease-out;
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); }
+}
+
+#todayDate {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #6200ea;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* --- キャラクターページ --- */
 .character-list {
     display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: center;
+    flex-direction: column; /* 1列に1体にするため、縦並びにする */
+    gap: 25px; /* キャラクターカード間の隙間を広げる */
+    margin-top: 20px;
 }
 
-.character-card {
-    width: 150px;
-    text-align: center;
-    padding: 10px;
-}
-
-/* character-card のスタイルを修正 */
 .character-card {
     display: flex; /* Flexboxを有効にする */
     flex-direction: column; /* 要素を縦に並べる */
     align-items: center; /* 要素を中央に揃える */
-    padding: 20px;
+    padding: 25px; /* パディングを増やす */
     background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 15px; /* 角を丸くする */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* 影を濃くする */
     text-align: center;
     transition: transform 0.2s;
-    width: 200px; /* カード全体の幅を少し広くする */
-    margin: 10px;
+    width: 100%; /* 幅を親要素に合わせる */
+    max-width: 350px; /* カードの最大幅を設定 */
+    margin: 0 auto; /* 中央寄せ */
+    box-sizing: border-box;
 }
 
-/* character-card img のスタイルを修正 */
+.character-card:hover {
+    transform: translateY(-5px);
+}
+
 .character-card img {
-    width: 150px;
-    height: 150px;
+    width: 200px; /* 画像の幅を大きくする */
+    height: 200px; /* 画像の高さを大きくする */
     object-fit: contain;
-    margin-bottom: 20px; /* 画像とボタンの間の余白を調整 */
+    margin-bottom: 25px; /* 画像と情報の間隔を広げる */
+    border: 3px solid #6200ea; /* 画像に枠線を追加 */
+    border-radius: 10px; /* 画像の角を少し丸くする */
+    background-color: #e0e0e0; /* 背景色を追加 */
+}
+
+.character-card h3 {
+    font-size: 1.8em; /* キャラクター名を大きくする */
+    margin-bottom: 10px;
+    color: #6200ea;
+}
+
+.character-card p {
+    font-size: 1.1em; /* 情報の文字サイズを大きくする */
+    margin-bottom: 8px;
+    line-height: 1.4;
 }
 
 .level-up-button, .evolve-button {
-    width: 100%;
-    padding: 8px;
-    margin-top: 10px;
-    font-size: 0.9em;
-    font-weight: bold;
-    color: white;
-    background-color: #2ecc71;
+    background-color: #ff4081;
+    color: #fff;
     border: none;
-    border-radius: 5px;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-size: 1.1em;
+    font-weight: bold;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 80%; /* ボタンの幅を調整 */
+    max-width: 250px;
+    margin-top: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.level-up-button:disabled {
-    background-color: #bdc3c7;
+.level-up-button:hover, .evolve-button:hover {
+    background-color: #f50057;
+}
+
+.level-up-button:disabled, .evolve-button:disabled {
+    background-color: #ccc;
     cursor: not-allowed;
+    box-shadow: none;
+}
+
+.hint-message {
+    text-align: center;
+    color: #666;
+    margin-top: 20px;
+    font-size: 1em;
 }
 
 .total-stats {
     text-align: center;
-    margin-top: 20px;
-    font-size: 1.1em;
+    margin-top: 30px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #4a148c;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
 }
 
-/* --- カレンダーページのスタイル --- */
+/* --- カレンダーページ --- */
 .calendar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .calendar-nav-btn {
-    background-color: #3498db;
-    color: white;
+    background-color: #03dac6;
+    color: #fff;
     border: none;
-    padding: 8px 12px;
-    font-size: 1.2em;
+    padding: 8px 15px;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 1.2em;
+    transition: background-color 0.3s ease;
+}
+
+.calendar-nav-btn:hover {
+    background-color: #018786;
+}
+
+#currentMonthYear {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #6200ea;
 }
 
 .calendar-weekdays {
@@ -184,7 +256,8 @@ h2 {
     grid-template-columns: repeat(7, 1fr);
     text-align: center;
     font-weight: bold;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    color: #888;
 }
 
 .calendar-grid {
@@ -194,105 +267,93 @@ h2 {
 }
 
 .calendar-day {
-    border: 1px solid #e0e0e0;
-    padding: 5px;
+    padding: 10px 5px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    text-align: center;
     min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
     font-size: 0.9em;
     position: relative;
-    background-color: #f7f7f7;
-    border-radius: 5px;
+    background-color: #fdfdfd;
+}
+
+.calendar-day.not-current-month {
+    background-color: #f0f0f0;
+    color: #aaa;
 }
 
 .day-number {
     font-weight: bold;
-    color: #34495e;
+    font-size: 1.1em;
+    margin-bottom: 5px;
+    color: #333;
 }
 
-.calendar-day.not-current-month {
-    background-color: #ebebeb;
-    color: #bdc3c7;
+.calendar-day.not-current-month .day-number {
+    color: #aaa;
 }
 
 .stamp-item {
-    background-color: #3498db;
-    color: white;
-    padding: 2px 5px;
-    border-radius: 4px;
-    margin-top: 3px;
+    background-color: #e0f7fa;
+    color: #00796b;
     font-size: 0.7em;
-    overflow: hidden;
+    padding: 3px 5px;
+    border-radius: 3px;
+    margin-top: 3px;
     white-space: nowrap;
+    overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 100%;
 }
+
 
 /* --- フッターとナビゲーション --- */
 footer {
     background-color: #fff;
+    border-top: 1px solid #eee;
     padding: 10px 0;
-    box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
-    position: sticky;
-    bottom: 0;
-    width: 100%;
-    z-index: 1000;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+    margin-top: auto; /* フッターを常に下部に固定 */
 }
 
 .nav-menu ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
     display: flex;
     justify-content: space-around;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .nav-item {
-    flex-grow: 1;
+    flex: 1;
     text-align: center;
-    transition: background-color 0.3s;
-    border-top: 3px solid transparent;
-}
-
-.nav-item.active {
-    border-top-color: #3498db;
-    background-color: #f7f7f7;
 }
 
 .nav-item a {
+    text-decoration: none;
+    color: #999;
+    padding: 10px 5px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-decoration: none;
-    color: #7f8c8d;
-    padding: 5px;
+    font-size: 0.9em;
+    transition: color 0.3s ease;
 }
 
-.nav-item .icon {
-    display: block;
-    font-size: 24px;
+.nav-item a .icon {
+    font-size: 1.8em;
     margin-bottom: 5px;
 }
-.stamp-effect-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
+
+.nav-item.active a {
+    color: #6200ea;
+    font-weight: bold;
 }
 
-.stamp-icon {
-    font-size: 2em;
-    animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-}
-
-@keyframes bounceIn {
-    0% {
-        transform: scale(0.1);
-        opacity: 0;
-    }
-    60% {
-        transform: scale(1.2);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(1);
-    }
+.nav-item a:hover {
+    color: #4a148c;
 }
