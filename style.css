@@ -115,10 +115,12 @@ h2 {
 }
 
 .character-card img {
-    width: 150px; /* 既存の幅 */
-    height: auto;
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
     display: block;
     margin: 0 auto 10px;
+}
     /* 追記: 拡大 */
     transform: scale(1.5);
     transform-origin: center; /* 中心を基準に拡大 */
