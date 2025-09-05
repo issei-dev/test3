@@ -231,21 +231,33 @@ function renderCharacters() {
     }
 }
 
-    function handleLevelUpClick(event) {
-        const charId = parseInt(event.target.dataset.character-id, 10);
-        const characterToUpdate = appData.characters.find(c => c.id === charId);
+    // main.js の handleEvolveClick 関数
+
+function handleEvolveClick(event) {
+    const charId = parseInt(event.target.dataset.characterId, 10);
+    const characterToUpdate = appData.characters.find(c => c.id === charId);
+    
+    if (!characterToUpdate) return;
+
+    const master = CHARACTER_MASTER_DATA[characterToUpdate.id];
+    const nextEvolutionIndex = characterToUpdate.evolutionIndex + 1;
+    
+    // 次の進化先が存在するかチェック
+    if (master.evolutions[nextEvolutionIndex]) {
+        // 進化段階を1つ進める
+        characterToUpdate.evolutionIndex = nextEvolutionIndex;
+        // レベルを1に戻す
+        characterToUpdate.level = 1;
         
-        const requiredPoints = (characterToUpdate.level + 1) * 10;
+        alert('おめでとう！キャラクターが進化したよ！');
         
-        if (appData.totalPoints >= requiredPoints) {
-            appData.totalPoints -= requiredPoints;
-            characterToUpdate.level++;
-            
-            const master = CHARACTER_MASTER_DATA[characterToUpdate.id];
-            if (master.evolutions[characterToUpdate.evolutionIndex + 1] && characterToUpdate.level % 10 === 0) {
-                characterToUpdate.evolutionIndex++;
-                alert('おめでとう！キャラクターが進化したよ！');
-            }
+        saveData();
+        updatePointDisplay();
+        renderCharacters(); // 画面を再描画
+    } else {
+        alert('このキャラクターはこれ以上進化できません！');
+    }
+}
             
             saveData();
             updatePointDisplay();
