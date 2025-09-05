@@ -248,12 +248,8 @@ footer {
     padding: 5px;
 }
 
-.nav-item a span {
-    font-size: 0.8em;
-    margin-top: 5px;
-}
-
-.nav-item img {
-    width: 24px;
-    height: 24px;
+.nav-item .icon {
+    display: block;
+    font-size: 24px;
+    margin-bottom: 5px;
 }
