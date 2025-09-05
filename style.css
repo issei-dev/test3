@@ -9,7 +9,7 @@ body {
 }
 
 header {
-    background-color: #6200ea;
+    background-color: #03dac6; /* 元の水色に戻す */
     color: white;
     padding: 15px 20px;
     text-align: right;
