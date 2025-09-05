@@ -8,16 +8,31 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const CHARACTER_MASTER_DATA = {
-        1: {
-            initialAttack: 10,
-            evolutions: [
-                { name: "コドラゴン", image: "images-n001.png", rank: "Normal(ノーマル)" },
+    1: {
+        initialAttack: 10,
+        evolutions: [
+            // Normal ランク
+                { name: "コドラゴン", image: "images-n001.png", rank: "Normal", maxLevel: 30 },
+            // Rare ランク
+            { name: "にわとり騎士", image: "images/niwatori_knight.png", rank: "Rare", maxLevel: 50 },
+            // Super Rare ランク
+            { name: "イーグルライダー", image: "images/eagle_rider.png", rank: "Super Rare", maxLevel: 75 },
             ]
         },
-        2: {
-            initialAttack: 30,
-            evolutions: [
-                { name: "フレイムリザード", image: "images-r001.png", rank: "Rare(レア)" },
+          2: {
+        initialAttack: 15,
+        evolutions: [
+            // Normal ランク
+            { name: "みならい魔法使い", image: "images/minarai_mahoutsukai.png", rank: "Normal", maxLevel: 30 },
+            // Super Rare ランク
+            { name: "一人前の魔導士", image: "images/ichininmae_madoushi.png", rank: "Super Rare", maxLevel: 75 },
+            // Ultimate Rare ランク
+            { name: "大賢者", image: "images/daikenja.png", rank: "Ultimate Rare", maxLevel: 99 },
+        ]
+    }
+    // 必要に応じて、ここにUltra Rareなどを追加
+    // 例：{ name: "伝説の勇者", rank: "Ultra Rare", maxLevel: 80 }
+};
                
             ]
         }
