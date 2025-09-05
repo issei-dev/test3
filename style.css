@@ -306,3 +306,12 @@ main {
     box-sizing: border-box;
     text-align: center;
 }
+.danger-button {
+    background-color: #e74c3c;
+    border: 2px solid #c0392b;
+    color: white;
+}
+
+.danger-button:hover {
+    background-color: #c0392b;
+}
