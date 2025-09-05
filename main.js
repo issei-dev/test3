@@ -174,47 +174,62 @@ function initializeCharacterPage() {
         renderCharacters();
     }
 
-    function renderCharacters() {
-        characterListContainerEl.innerHTML = '';
+    // main.js の renderCharacters 関数
+
+function renderCharacters() {
+    characterListContainerEl.innerHTML = '';
+    
+    let totalAttackPower = 0;
+    appData.characters.forEach(charData => {
+        const master = CHARACTER_MASTER_DATA[charData.id];
+        const currentEvolution = master.evolutions[charData.evolutionIndex];
         
-        let totalAttackPower = 0;
-        appData.characters.forEach(charData => {
-            const master = CHARACTER_MASTER_DATA[charData.id];
-            const attackPower = master.initialAttack * charData.level;
-            totalAttackPower += attackPower;
+        // 現在の進化段階の最大レベルを取得
+        const maxLevel = currentEvolution.maxLevel;
+        const isMaxLevel = charData.level >= maxLevel;
+        
+        const attackPower = master.initialAttack * charData.level;
+        totalAttackPower += attackPower;
+        
+        // レベルアップに必要なポイント
+        const requiredPoints = (charData.level + 1) * 10;
+        const canLevelUp = appData.totalPoints >= requiredPoints && !isMaxLevel;
+        
+        const card = document.createElement('div');
+        card.className = 'card character-card';
+        card.innerHTML = `
+            <img src="${currentEvolution.image}" alt="${currentEvolution.name}">
+            <h3>${currentEvolution.name} (Lv. ${charData.level})</h3>
+            <p>ランク: ${currentEvolution.rank}</p>
+            <p>攻撃力: ${attackPower}</p>
+            ${!isMaxLevel ? `<p>次のレベルまで: ${requiredPoints} P</p>` : `<p>この形態は最大レベルです！</p>`}
             
-            const currentEvolution = master.evolutions[charData.evolutionIndex];
-            const requiredPoints = (charData.level + 1) * 10;
-            const canLevelUp = appData.totalPoints >= requiredPoints && charData.level < 99;
-            
-            const card = document.createElement('div');
-            card.className = 'card character-card';
-            card.innerHTML = `
-                <img src="${currentEvolution.image}" alt="${currentEvolution.name}">
-                <h3>${currentEvolution.name} (Lv. ${charData.level})</h3>
-                <p>ランク: ${currentEvolution.rank}</p>
-                <p>攻撃力: ${attackPower}</p>
-                <p>次のレベルまで: ${requiredPoints} P</p>
-                <button class="level-up-button" data-character-id="${charData.id}" ${canLevelUp ? '' : 'disabled'}>
-                    レベルアップ！
-                </button>
-            `;
-            characterListContainerEl.appendChild(card);
-        });
+            ${isMaxLevel
+                ? `<button class="evolve-button" data-character-id="${charData.id}">進化する！</button>`
+                : `<button class="level-up-button" data-character-id="${charData.id}" ${canLevelUp ? '' : 'disabled'}>レベルアップ！</button>`
+            }
+        `;
+        characterListContainerEl.appendChild(card);
+    });
 
-        totalAttackPowerEl.textContent = totalAttackPower;
-        totalCharacterCountEl.textContent = appData.characters.length;
+    totalAttackPowerEl.textContent = totalAttackPower;
+    totalCharacterCountEl.textContent = appData.characters.length;
 
-        document.querySelectorAll('.level-up-button').forEach(button => {
-            button.addEventListener('click', handleLevelUpClick);
-        });
+    // 「レベルアップ」ボタンにイベントリスナーを設定
+    document.querySelectorAll('.level-up-button').forEach(button => {
+        button.addEventListener('click', handleLevelUpClick);
+    });
+    // 「進化」ボタンにイベントリスナーを設定
+    document.querySelectorAll('.evolve-button').forEach(button => {
+        button.addEventListener('click', handleEvolveClick);
+    });
 
-        if (appData.characters.some(char => char.level >= 30)) {
-            characterHintEl.textContent = '次のキャラクターを追加する準備ができました！';
-        } else {
-            characterHintEl.textContent = 'キャラクターを30レベルにしてみよう。';
-        }
+    if (appData.characters.some(char => char.level >= 30)) {
+        characterHintEl.textContent = '次のキャラクターを追加する準備ができました！';
+    } else {
+        characterHintEl.textContent = 'キャラクターを30レベルにしてみよう。';
     }
+}
 
     function handleLevelUpClick(event) {
         const charId = parseInt(event.target.dataset.character-id, 10);
