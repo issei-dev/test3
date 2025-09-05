@@ -9,14 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const CHARACTER_MASTER_DATA = {
         1: {
             evolutions: [
-                { name: "ひよこナイト", image: "images/hiyoko_knight.png", rank: "Normal", initialAttack: 10, maxLevel: 30 },
+                { name: "ひよこナイト", image: "images/images-n001.png", rank: "Normal", initialAttack: 10, maxLevel: 30 },
                 { name: "にわとり騎士", image: "images/niwatori_knight.png", rank: "Rare", initialAttack: 25, maxLevel: 50 },
                 { name: "イーグルライダー", image: "images/eagle_rider.png", rank: "Super Rare", initialAttack: 50, maxLevel: 75 },
             ]
         },
         2: {
             evolutions: [
-                { name: "みならい魔法使い", image: "images/minarai_mahoutsukai.png", rank: "Normal", initialAttack: 15, maxLevel: 30 },
+                { name: "みならい魔法使い", image: "images-sr003.png", rank: "Normal", initialAttack: 15, maxLevel: 30 },
                 { name: "一人前の魔導士", image: "images/ichininmae_madoushi.png", rank: "Super Rare", initialAttack: 40, maxLevel: 75 },
                 { name: "大賢者", image: "images/daikenja.png", rank: "Ultimate Rare", initialAttack: 80, maxLevel: 99 },
             ]
