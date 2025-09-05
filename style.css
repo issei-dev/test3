@@ -115,10 +115,18 @@ h2 {
 }
 
 .character-card img {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
+    width: 150px; /* 既存の幅 */
+    height: auto;
+    display: block;
+    margin: 0 auto 10px;
+    /* 追記: 拡大 */
+    transform: scale(1.5);
+    transform-origin: center; /* 中心を基準に拡大 */
+    margin-bottom: 30px; /* 拡大による要素の重なりを避けるため余白を調整 */
 }
+
+/* 拡大に合わせてカード全体のレイアウトを調整するかもしれないため、
+   必要に応じて.character-cardや.character-listのスタイルも調整してください。 */
 
 .level-up-button, .evolve-button {
     width: 100%;
