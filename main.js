@@ -162,14 +162,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalCharacterCountEl = document.getElementById('totalCharacterCount');
 
     function initializeCharacterPage() {
-        if (appData.characters.length === 0) {
+        loadData();
+        // キャラクターが3体未満の場合、追加する
+        if (appData.characters.length < 3) {
             appData.characters.push({
-                id: 1,
-                level: 1,
-                evolutionIndex: 0
-            });
-            appData.characters.push({
-                id: 2,
+                id: appData.characters.length + 1, // 新しいキャラクターIDを割り当てる
                 level: 1,
                 evolutionIndex: 0
             });
@@ -218,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         totalAttackPowerEl.textContent = totalAttackPower;
         totalCharacterCountEl.textContent = appData.characters.length;
-
+        
         document.querySelectorAll('.level-up-button').forEach(button => {
             button.addEventListener('click', handleLevelUpClick);
         });
@@ -226,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
             button.addEventListener('click', handleEvolveClick);
         });
 
-       if (appData.characters.length < 5) {
+        if (appData.characters.length < 3) {
             characterHintEl.textContent = 'キャラクターを30レベルにすると、新しいキャラクターが追加できます！';
         } else {
             characterHintEl.textContent = 'すべてのキャラクターが揃っています！';
