@@ -9,7 +9,7 @@ body {
 }
 
 header {
-    background-color: #03dac6; /* 元の水色に戻す */
+    background-color: #03dac6;
     color: white;
     padding: 15px 20px;
     text-align: right;
@@ -132,24 +132,24 @@ input[type="text"] {
 /* --- キャラクターページ --- */
 .character-list {
     display: flex;
-    flex-direction: column; /* 1列に1体にするため、縦並びにする */
-    gap: 25px; /* キャラクターカード間の隙間を広げる */
+    flex-direction: column;
+    gap: 25px;
     margin-top: 20px;
 }
 
 .character-card {
-    display: flex; /* Flexboxを有効にする */
-    flex-direction: column; /* 要素を縦に並べる */
-    align-items: center; /* 要素を中央に揃える */
-    padding: 25px; /* パディングを増やす */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px;
     background-color: #fff;
-    border-radius: 15px; /* 角を丸くする */
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* 影を濃くする */
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     text-align: center;
     transition: transform 0.2s;
-    width: 100%; /* 幅を親要素に合わせる */
-    max-width: 350px; /* カードの最大幅を設定 */
-    margin: 0 auto; /* 中央寄せ */
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
     box-sizing: border-box;
 }
 
@@ -158,23 +158,24 @@ input[type="text"] {
 }
 
 .character-card img {
-    width: 200px; /* 画像の幅を大きくする */
-    height: 200px; /* 画像の高さを大きくする */
+    width: 200px;
+    height: 200px;
     object-fit: contain;
-    margin-bottom: 25px; /* 画像と情報の間隔を広げる */
-    border: 3px solid #6200ea; /* 画像に枠線を追加 */
-    border-radius: 10px; /* 画像の角を少し丸くする */
-    background-color: #e0e0e0; /* 背景色を追加 */
+    margin-bottom: 25px;
+    border: 3px solid #6200ea;
+    border-radius: 10px;
+    background-color: #e0e0e0;
+    cursor: pointer; /* マウスオーバー時にカーソルを指マークにする */
 }
 
 .character-card h3 {
-    font-size: 1.8em; /* キャラクター名を大きくする */
+    font-size: 1.8em;
     margin-bottom: 10px;
     color: #6200ea;
 }
 
 .character-card p {
-    font-size: 1.1em; /* 情報の文字サイズを大きくする */
+    font-size: 1.1em;
     margin-bottom: 8px;
     line-height: 1.4;
 }
@@ -189,7 +190,7 @@ input[type="text"] {
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    width: 80%; /* ボタンの幅を調整 */
+    width: 80%;
     max-width: 250px;
     margin-top: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -317,7 +318,7 @@ footer {
     border-top: 1px solid #eee;
     padding: 10px 0;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
-    margin-top: auto; /* フッターを常に下部に固定 */
+    margin-top: auto;
 }
 
 .nav-menu ul {
@@ -356,4 +357,43 @@ footer {
 
 .nav-item a:hover {
     color: #4a148c;
+}
+
+/* --- モーダル（ポップアップ）のスタイル --- */
+.modal {
+    display: none; /* 初期状態では非表示 */
+    position: fixed; /* 画面に固定 */
+    z-index: 1; /* 最前面に表示 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* スクロール可能にする */
+    background-color: rgba(0, 0, 0, 0.9); /* 黒色の半透明背景 */
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+    color: #bbb;
+    text-decoration: none;
 }
