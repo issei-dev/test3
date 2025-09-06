@@ -45,7 +45,7 @@ h2 {
     font-weight: 700;
 }
 
-h3 {
+h3, h4 {
     color: #4a148c;
     margin-top: 15px;
     margin-bottom: 10px;
@@ -106,8 +106,7 @@ input[type="text"] {
     display: flex;
     justify-content: center;
     gap: 10px;
-    margin-bottom: 15px;
-    min-height: 40px; /* スタンプがないときでもスペースを確保 */
+    min-height: 40px;
 }
 
 .stamp-icon {
@@ -165,7 +164,7 @@ input[type="text"] {
     border: 3px solid #6200ea;
     border-radius: 10px;
     background-color: #e0e0e0;
-    cursor: pointer; /* マウスオーバー時にカーソルを指マークにする */
+    cursor: pointer;
 }
 
 .character-card h3 {
@@ -221,6 +220,64 @@ input[type="text"] {
     color: #4a148c;
     border-top: 1px solid #eee;
     padding-top: 20px;
+}
+
+/* --- ボス画面 --- */
+.boss-container {
+    text-align: center;
+}
+
+.boss-image-container {
+    margin-top: 20px;
+    position: relative;
+    height: 250px;
+}
+
+.boss-image {
+    max-width: 90%;
+    max-height: 250px;
+    object-fit: contain;
+    transition: transform 0.1s ease-in-out;
+}
+
+.health-bar-container {
+    width: 90%;
+    max-width: 400px;
+    margin: 20px auto 0;
+    text-align: left;
+}
+
+.health-bar-label {
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.health-bar {
+    width: 100%;
+    height: 25px;
+    background-color: #ddd;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.health-fill {
+    height: 100%;
+    background-color: #ff4081;
+    transition: width 0.5s ease-in-out;
+}
+
+/* 攻撃時の揺れアニメーション */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+.shake {
+    animation: shake 0.3s ease-in-out;
 }
 
 /* --- カレンダーページ --- */
@@ -361,15 +418,15 @@ footer {
 
 /* --- モーダル（ポップアップ）のスタイル --- */
 .modal {
-    display: none; /* 初期状態では非表示 */
-    position: fixed; /* 画面に固定 */
-    z-index: 1; /* 最前面に表示 */
+    display: none;
+    position: fixed;
+    z-index: 1;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto; /* スクロール可能にする */
-    background-color: rgba(0, 0, 0, 0.9); /* 黒色の半透明背景 */
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9);
     align-items: center;
     justify-content: center;
 }
@@ -379,6 +436,21 @@ footer {
     display: block;
     max-width: 90%;
     max-height: 90%;
+}
+
+.modal-content-small {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 .modal-close {
