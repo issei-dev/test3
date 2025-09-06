@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const BOSS_MASTER_DATA = {
-        1: { name: "ゴブリン", image: "531864-backgroundImage1.png", maxHp: 1000, rewardPoints: 500 },
+        1: { name: "ゴブリン", image: "images-002c.png", maxHp: 1000, rewardPoints: 500 },
         2: { name: "巨大スライム", image: "images/boss_slime.png", maxHp: 2500, rewardPoints: 1000 },
         3: { name: "オーガ", image: "images/boss_ogre.png", maxHp: 5000, rewardPoints: 2000 },
     };
