@@ -340,7 +340,6 @@ document.addEventListener('DOMContentLoaded', () => {
         loadData();
         const currentBossData = BOSS_MASTER_DATA[appData.boss.currentStage];
         if (!currentBossData) {
-            // 全ボスを倒した場合の処理
             bossImageEl.src = '';
             stageNameEl.textContent = '全ステージクリア！';
             bossNameEl.textContent = '新しいボスを待て！';
@@ -353,12 +352,11 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // データの初期化
-        if (appData.boss.currentHp === 0 && appData.boss.currentStage > 0) {
+        if (appData.boss.currentHp === 0) {
             appData.boss.currentHp = currentBossData.maxHp;
             saveData();
         }
-
+        
         renderBossStatus();
         checkAttackButtonState();
     }
