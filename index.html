@@ -47,6 +47,27 @@
             </div>
         </div>
 
+        <div id="boss" class="page">
+            <h2>ボス</h2>
+            <div class="card">
+                <div id="bossContainer" class="boss-container">
+                    <h3 id="stageName">ステージ 1</h3>
+                    <h4 id="bossName">ボス: ゴブリン</h4>
+                    <div class="boss-image-container">
+                        <img id="bossImage" src="images/boss_goblin.png" alt="ボス画像" class="boss-image">
+                    </div>
+                    <div class="health-bar-container">
+                        <div class="health-bar-label">HP: <span id="bossCurrentHp">1000</span> / <span id="bossMaxHp">1000</span></div>
+                        <div class="health-bar">
+                            <div id="healthFill" class="health-fill"></div>
+                        </div>
+                    </div>
+                    <button id="attackButton" class="main-button">攻撃！</button>
+                </div>
+                <p id="attackMessage" class="hint-message"></p>
+            </div>
+        </div>
+        
         <div id="calendar" class="page">
             <h2>カレンダー</h2>
             <div class="card">
@@ -78,6 +99,12 @@
                         <span>キャラクター</span>
                     </a>
                 </li>
+                <li class="nav-item" data-page="boss">
+                    <a href="#">
+                        <span class="icon">👹</span>
+                        <span>ボス</span>
+                    </a>
+                </li>
                 <li class="nav-item" data-page="calendar">
                     <a href="#">
                         <span class="icon">📅</span>
@@ -91,6 +118,14 @@
     <div id="image-modal" class="modal">
         <span class="modal-close">&times;</span>
         <img class="modal-content" id="expanded-image" src="" alt="">
+    </div>
+
+    <div id="clear-modal" class="modal">
+        <div class="modal-content-small">
+            <h2 id="clearMessage">ステージクリア！🎉</h2>
+            <p id="clearReward"></p>
+            <button id="nextStageButton" class="main-button">次のステージへ</button>
+        </div>
     </div>
 
     <script src="main.js"></script>
