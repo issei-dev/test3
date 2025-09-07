@@ -306,34 +306,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handleEvolveClick(event) {
-        const charId = parseInt(event.target.dataset.characterId, 10);
-        const characterToUpdate = appData.characters.find(c => c.id === charId);
-        
-        if (!characterToUpdate) return;
-        
-        const requiredEvolvePoints = 500;
-        if (appData.totalPoints < requiredEvolvePoints) {
-            alert('進化に必要なポイントが足りません！');
-            return;
-        }
-
-        const master = CHARACTER_MASTER_DATA[characterToUpdate.id];
-        const nextEvolutionIndex = characterToUpdate.evolutionIndex + 1;
-        
-        if (master.evolutions[nextEvolutionIndex]) {
-            appData.totalPoints -= requiredEvolvePoints;
-            characterToUpdate.evolutionIndex = nextEvolutionIndex;
-            characterToUpdate.level = 1;
-            
-            alert('おめでとう！キャラクターが進化したよ！');
-            
-            saveData();
-            updatePointDisplay();
-            renderCharacters();
-        } else {
-            alert('このキャラクターはこれ以上進化できません！');
-        }
+    const charId = parseInt(event.target.dataset.characterId, 10);
+    const characterToUpdate = appData.characters.find(c => c.id === charId);
+    
+    if (!characterToUpdate) return;
+    
+    const requiredEvolvePoints = 500;
+    // ポイントが足りているかどうかのチェックは残しておく
+    if (appData.totalPoints < requiredEvolvePoints) {
+        alert('進化に必要なポイントが足りません！');
+        return;
     }
+
+    const master = CHARACTER_MASTER_DATA[characterToUpdate.id];
+    const nextEvolutionIndex = characterToUpdate.evolutionIndex + 1;
+    
+    if (master.evolutions[nextEvolutionIndex]) {
+        // --- 変更点：この行を削除します ---
+        // appData.totalPoints -= requiredEvolvePoints; 
+        
+        characterToUpdate.evolutionIndex = nextEvolutionIndex;
+        characterToUpdate.level = 1;
+        
+        alert('おめでとう！キャラクターが進化したよ！');
+        
+        saveData();
+        updatePointDisplay();
+        renderCharacters();
+    } else {
+        alert('このキャラクターはこれ以上進化できません！');
+    }
+}
 
     // --- ページ3: ボス機能 ---
     function initializeBossPage() {
