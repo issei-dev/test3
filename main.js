@@ -229,10 +229,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const attackPower = currentEvolution.initialAttack * charData.level;
             totalAttackPower += attackPower;
             
-            const requiredPoints = (charData.level + 1) * 10;
+            const requiredPoints = (charData.level + 1) * 5;
             const canLevelUp = appData.totalPoints >= requiredPoints && !isMaxLevel;
             
-            const requiredEvolvePoints = 500;
+            const requiredEvolvePoints = 100;
             const canEvolve = appData.totalPoints >= requiredEvolvePoints;
 
             const card = document.createElement('div');
@@ -311,11 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (!characterToUpdate) return;
     
-    const requiredEvolvePoints = 500;
-    // ポイントが足りているかどうかのチェックは残しておく
-    if (appData.totalPoints < requiredEvolvePoints) {
-        alert('進化に必要なポイントが足りません！');
-        return;
+   
     }
 
     const master = CHARACTER_MASTER_DATA[characterToUpdate.id];
